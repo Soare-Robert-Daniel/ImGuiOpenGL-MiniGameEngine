@@ -19,9 +19,10 @@ add_requires("assimp")
 -- Executable
 target("cge")
     set_kind("binary")
-    add_headerfiles("src/*.hpp")
+    add_headerfiles("src/*.h")
     add_files("src/*.cpp")
     add_packages("glfw", "imgui", "glad", "glm", "glew", "stb", "assimp")
+    set_toolchains("msvc")
 
 
 --

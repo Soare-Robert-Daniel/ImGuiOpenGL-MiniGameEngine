@@ -8,34 +8,29 @@ cmake_policy(SET CMP0091 NEW)
 project(cge LANGUAGES CXX C)
 
 # target
-add_executable(cge "" src/ShaderLoader.cpp src/ShaderLoader.h)
+set(CMAKE_C_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.33.31629/bin/HostX64/x64/cl.exe")
+set(CMAKE_CXX_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.33.31629/bin/HostX64/x64/cl.exe")
+add_executable(cge "")
 set_target_properties(cge PROPERTIES OUTPUT_NAME "cge")
-set_target_properties(cge PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/macosx/x86_64/release")
+set_target_properties(cge PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/windows/x64/release")
 target_include_directories(cge PRIVATE
-    /Users/robert/.xmake/packages/g/glfw/3.3.8/f5992d88b37a4869874dc399c63c0180/include
-    /Users/robert/.xmake/packages/i/imgui/v1.88/03396009b77d4dafbe737c29cd1afd34/include
-    /Users/robert/.xmake/packages/i/imgui/v1.88/03396009b77d4dafbe737c29cd1afd34/include/imgui
-    /Users/robert/.xmake/packages/i/imgui/v1.88/03396009b77d4dafbe737c29cd1afd34/include/backends
-    /Users/robert/.xmake/packages/g/glad/v0.1.36/bfffd26f8ff641528c84724d7bfacc36/include
-    /Users/robert/.xmake/packages/g/glm/0.9.9+8/4fc0eb3c4cd2418fb1720cee58cca88d/include
-    /Users/robert/.xmake/packages/g/glew/2.2.0/8b7ec76d6b9b4fac9e902cba491bc101/include
-    /Users/robert/.xmake/packages/s/stb/2021.09.10/6c0c2519d0ea47cfa24a36df5c1c169a/include
-    /Users/robert/.xmake/packages/a/assimp/v5.2.4/f9ff5fa171d245a6a7e92b7f70308306/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glfw/3.3.8/d12e591897c9472fb7d3725fa5811388/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/a33a4362b6f1475abecbeb21e7147b1b/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/a33a4362b6f1475abecbeb21e7147b1b/include/imgui
+    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/a33a4362b6f1475abecbeb21e7147b1b/include/backends
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glad/v0.1.36/d58ee23747ff411aae74b40986460499/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glm/0.9.9+8/8335bab7c0314ab9921440de58961aac/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glew/2.2.0/618c7b92c819453eaa1a00a41d1d32e3/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/s/stb/2021.09.10/f94e80cd4717410f960b64150d6d3727/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/a/assimp/v5.2.4/84bc4aaf582640a3b4f6df4b4a5401ee/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/z/zlib/v1.2.12/b5ea843dabd742168c9611e216a46175/include
 )
 target_compile_definitions(cge PRIVATE
     GLFW_INCLUDE_NONE
-    GL_SILENCE_DEPRECATION
     GLEW_NO_GLU
+    GLEW_STATIC
 )
 target_compile_options(cge PRIVATE
-    $<$<COMPILE_LANGUAGE:C>:-target>
-    $<$<COMPILE_LANGUAGE:CXX>:-target>
-    $<$<COMPILE_LANGUAGE:C>:x86_64-apple-macos12.3>
-    $<$<COMPILE_LANGUAGE:CXX>:x86_64-apple-macos12.3>
-    $<$<COMPILE_LANGUAGE:C>:-isysroot>
-    $<$<COMPILE_LANGUAGE:CXX>:-isysroot>
-    $<$<COMPILE_LANGUAGE:C>:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk>
-    $<$<COMPILE_LANGUAGE:CXX>:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk>
     $<$<COMPILE_LANGUAGE:C>:-DNDEBUG>
     $<$<COMPILE_LANGUAGE:CXX>:-DNDEBUG>
 )
@@ -56,28 +51,34 @@ if(MSVC)
 endif()
 target_link_libraries(cge PRIVATE
     glfw3
+    opengl32
     imgui
     glad
-    glew
-    assimp
+    glew32s
+    assimp-vc143-mt
     zlibstatic
-    z
-    "-framework Cocoa"
-    "-framework IOKit"
-    "-framework OpenGL"
-    z
+    zlib
+    user32
+    shell32
+    gdi32
+    imm32
+    opengl32
+    advapi32
 )
 target_link_directories(cge PRIVATE
-    /Users/robert/.xmake/packages/g/glfw/3.3.8/f5992d88b37a4869874dc399c63c0180/lib
-    /Users/robert/.xmake/packages/i/imgui/v1.88/03396009b77d4dafbe737c29cd1afd34/lib
-    /Users/robert/.xmake/packages/g/glad/v0.1.36/bfffd26f8ff641528c84724d7bfacc36/lib
-    /Users/robert/.xmake/packages/g/glew/2.2.0/8b7ec76d6b9b4fac9e902cba491bc101/lib
-    /Users/robert/.xmake/packages/a/assimp/v5.2.4/f9ff5fa171d245a6a7e92b7f70308306/lib
-)
-target_link_options(cge PRIVATE
-    -stdlib=libc++
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glfw/3.3.8/d12e591897c9472fb7d3725fa5811388/lib
+    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/a33a4362b6f1475abecbeb21e7147b1b/lib
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glad/v0.1.36/d58ee23747ff411aae74b40986460499/lib
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glew/2.2.0/618c7b92c819453eaa1a00a41d1d32e3/lib
+    C:/Users/Robert/AppData/Local/.xmake/packages/a/assimp/v5.2.4/84bc4aaf582640a3b4f6df4b4a5401ee/lib
+    C:/Users/Robert/AppData/Local/.xmake/packages/z/zlib/v1.2.12/b5ea843dabd742168c9611e216a46175/lib
 )
 target_sources(cge PRIVATE
     src/main.cpp
+    src/Mesh.cpp
+    src/ShaderLoader.cpp
+    src/Mesh.h
+    src/ShaderLoader.h
+    src/Vertex.h
 )
 

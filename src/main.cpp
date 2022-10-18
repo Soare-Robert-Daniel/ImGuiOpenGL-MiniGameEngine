@@ -10,6 +10,7 @@
 // #include <assimp/aabb.h>
 
 #include "ShaderLoader.h"
+#include "Mesh.h"
 
 // Vertex Shader source code
 const char* vertex_shader_source = "#version 330 core\n"
@@ -35,23 +36,38 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	// Vertices coordinates
-	const GLfloat vertices[] =
-	{
-		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
-		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
-		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
-		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left
-		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
-		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
-	};
+//	const GLfloat vertices[] =
+//	{
+//		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
+//		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
+//		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
+//		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left
+//		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
+//		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
+//	};
+
+    std::vector<CGE::Vertex> vertices = {
+            CGE::Vertex{ .position = glm::vec3(-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec3(1)}, // Lower left corner
+            CGE::Vertex{.position = glm::vec3(0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color =glm::vec3(1)}, // Lower right corner
+            CGE::Vertex{.position = glm::vec3(0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f), .color =glm::vec3(1)}, // Upper corner
+
+            CGE::Vertex{.position = glm::vec3(-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color =glm::vec3(1)}, // Inner left
+            CGE::Vertex{.position = glm::vec3(0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color =glm::vec3(1)}, // Inner right
+            CGE::Vertex{.position = glm::vec3(0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec3(1)}, // Inner down
+    };
 
 	// Indices for vertices order
-	const GLuint indices[] =
+	const std::vector<GLuint> indices =
 	{
 		0, 3, 5, // Lower left triangle
 		3, 2, 4, // Lower right triangle
 		5, 4, 1 // Upper triangle
 	};
+
+    auto mesh = Mesh("test");
+    mesh.AddIndices(indices);
+    mesh.AddVertices(vertices);
+    mesh.CreateMesh();
 
 
 	GLFWwindow* window = glfwCreateWindow(800, 800, "CGE by Soare Robert Daniel", NULL, NULL);
@@ -76,23 +92,23 @@ int main() {
     shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
     const auto shaderProgram = shaderLoader->CreateProgramFromLoadedSources();
 
-	GLuint VBO, VAO, EBO;
-
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_READ);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), static_cast<void*>(nullptr));
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+//	GLuint VBO, VAO, EBO;
+//
+//	glGenVertexArrays(1, &VAO);
+//	glGenBuffers(1, &VBO);
+//	glGenBuffers(1, &EBO);
+//
+//	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_READ);
+//
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+//
+//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), static_cast<void*>(nullptr));
+//	glEnableVertexAttribArray(0);
+//
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//	glBindVertexArray(0);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -110,9 +126,10 @@ int main() {
 		ImGui::NewFrame();
 		
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
+        mesh.Render();
+//		glBindVertexArray(VAO);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+//		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		ImGui::Begin("Custom Game Engine - Soare Robert Daniel");
 		ImGui::Text("Test UIS");
@@ -131,8 +148,8 @@ int main() {
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 	
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+//	glDeleteVertexArrays(1, &VAO);
+//	glDeleteBuffers(1, &VBO);
 
     shaderLoader->DeleteAllPrograms();
 
