@@ -1,16 +1,25 @@
+-- Sa le dea Dumnezeu sanatate celor care au facut XMake.
+
 add_rules("mode.debug", "mode.release")
 set_languages("cxx20")
 
-add_requires("glfw")
+-- Window Management
 add_requires("imgui", {configs = {glfw_opengl3 = true}})
+
+-- OpenGL libs
+add_requires("glfw")
 add_requires("glad")
 add_requires("glm")
 add_requires("glew")
+
+-- Helpers libs
 add_requires("stb")
 add_requires("assimp")
 
+-- Executable
 target("cge")
     set_kind("binary")
+    add_headerfiles("src/*.hpp")
     add_files("src/*.cpp")
     add_packages("glfw", "imgui", "glad", "glm", "glew", "stb", "assimp")
 

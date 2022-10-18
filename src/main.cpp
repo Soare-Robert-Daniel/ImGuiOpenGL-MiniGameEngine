@@ -9,6 +9,8 @@
 // #include <stb/stb_image.h>
 // #include <assimp/aabb.h>
 
+#include "ShaderLoader.h"
+
 // Vertex Shader source code
 const char* vertex_shader_source = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -30,6 +32,7 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	// Vertices coordinates
 	const GLfloat vertices[] =
@@ -51,7 +54,7 @@ int main() {
 	};
 
 
-	GLFWwindow* window = glfwCreateWindow(800, 800, "Youtube", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800, 800, "CGE by Soare Robert Daniel", NULL, NULL);
 
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -68,24 +71,10 @@ int main() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glfwSwapBuffers(window);
 
-	const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertex_shader_source, NULL);
-	glCompileShader(vertexShader);
-
-	const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragment_shader_source, NULL);
-	glCompileShader(fragmentShader);
-
-	const GLuint shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
+    const auto shaderLoader = ShaderLoader::GetInstance();
+    shaderLoader->LoadShaderSource(ShaderLoader::VERTEX, vertex_shader_source);
+    shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
+    const auto shaderProgram = shaderLoader->CreateProgramFromLoadedSources();
 
 	GLuint VBO, VAO, EBO;
 
@@ -144,7 +133,8 @@ int main() {
 	
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
+
+    shaderLoader->DeleteAllPrograms();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
