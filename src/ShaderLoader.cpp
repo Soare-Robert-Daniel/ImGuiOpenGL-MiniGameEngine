@@ -18,7 +18,7 @@ void ShaderLoader::LoadShaderSource(ShaderLoader::ShaderType type, const char *s
             break;
     }
 
-    glShaderSource(shader, 1, &source, NULL);
+    glShaderSource(shader, 1, &source, nullptr);
 
     shaderStack.push_back(shader);
 }

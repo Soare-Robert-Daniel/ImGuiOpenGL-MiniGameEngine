@@ -27,6 +27,20 @@ const char* fragment_shader_source = "#version 330 core\n"
 "   FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);\n"
 "}\n\0";
 
+void GLAPIENTRY
+MessageCallback( GLenum source,
+                 GLenum type,
+                 GLuint id,
+                 GLenum severity,
+                 GLsizei length,
+                 const GLchar* message,
+                 const void* userParam )
+{
+    fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+             ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+             type, severity, message );
+}
+
 int main() {
 	glfwInit();
 
@@ -46,33 +60,10 @@ int main() {
 //		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
 //	};
 
-    std::vector<CGE::Vertex> vertices = {
-            CGE::Vertex{ .position = glm::vec3(-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec3(1)}, // Lower left corner
-            CGE::Vertex{.position = glm::vec3(0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color =glm::vec3(1)}, // Lower right corner
-            CGE::Vertex{.position = glm::vec3(0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f), .color =glm::vec3(1)}, // Upper corner
 
-            CGE::Vertex{.position = glm::vec3(-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color =glm::vec3(1)}, // Inner left
-            CGE::Vertex{.position = glm::vec3(0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color =glm::vec3(1)}, // Inner right
-            CGE::Vertex{.position = glm::vec3(0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec3(1)}, // Inner down
-    };
+	GLFWwindow* window = glfwCreateWindow(800, 800, "CGE by Soare Robert Daniel", nullptr, nullptr);
 
-	// Indices for vertices order
-	const std::vector<GLuint> indices =
-	{
-		0, 3, 5, // Lower left triangle
-		3, 2, 4, // Lower right triangle
-		5, 4, 1 // Upper triangle
-	};
-
-    auto mesh = Mesh("test");
-    mesh.AddIndices(indices);
-    mesh.AddVertices(vertices);
-    mesh.CreateMesh();
-
-
-	GLFWwindow* window = glfwCreateWindow(800, 800, "CGE by Soare Robert Daniel", NULL, NULL);
-
-	if (window == NULL) {
+	if (window == nullptr) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
@@ -81,6 +72,8 @@ int main() {
 	glfwMakeContextCurrent(window);
 
 	gladLoadGL();
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback( MessageCallback, nullptr );
 	glViewport(0, 0, 800, 800);
 
 	glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -115,6 +108,29 @@ int main() {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
+
+    std::vector<CGE::Vertex> vertices = {
+            CGE::Vertex{ .position = glm::vec3(-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec3(1)}, // Lower left corner
+            CGE::Vertex{.position = glm::vec3(0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color =glm::vec3(1)}, // Lower right corner
+            CGE::Vertex{.position = glm::vec3(0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f), .color =glm::vec3(1)}, // Upper corner
+
+            CGE::Vertex{.position = glm::vec3(-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color =glm::vec3(1)}, // Inner left
+            CGE::Vertex{.position = glm::vec3(0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color =glm::vec3(1)}, // Inner right
+            CGE::Vertex{.position = glm::vec3(0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec3(1)}, // Inner down
+    };
+
+    // Indices for vertices order
+    const std::vector<GLuint> indices =
+            {
+                    0, 3, 5, // Lower left triangle
+                    3, 2, 4, // Lower right triangle
+                    5, 4, 1 // Upper triangle
+            };
+
+    auto mesh = Mesh("test");
+    mesh.AddIndices(indices);
+    mesh.AddVertices(vertices);
+    mesh.CreateMesh();
 
 
 	while (!glfwWindowShouldClose(window)) {
