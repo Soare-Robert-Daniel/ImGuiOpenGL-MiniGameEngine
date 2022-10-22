@@ -7,10 +7,9 @@
 #include <utility>
 #include <vector>
 #include <string>
-#include <glad/glad.h>
 #include "Vertex.h"
+#include <glad/glad.h>
 #include <iostream>
-
 
 class Mesh {
 public:
@@ -20,53 +19,15 @@ public:
         VAO = -1;
     }
 
-    void AddIndices( std::vector<GLuint> indices) {
-        _indices = std::move(indices);
-    }
+    void AddIndices( std::vector<GLuint> indices);
 
-    void AddVertices(std::vector<CGE::Vertex> vertices) {
-        _vertices = std::move(vertices);
-    }
+    void AddVertices(std::vector<CGE::Vertex> vertices);
 
-    void CreateMesh() {
-        GLuint VAO_ = 0;
-        GLuint VBO_ = 0;
-        GLuint IBO_ = 0;
+    void CreateMesh();
 
-        glGenVertexArrays(1, &VAO_);
-        glBindVertexArray(VAO_);
+    void Render() const;
 
-        // Bind VBO
-        glGenBuffers(1, &VBO_);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO_);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices[0]) * _vertices.size(), &_vertices[0], GL_STATIC_DRAW);
-
-        // Bind IBO
-        glGenBuffers(1, &IBO_);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO_);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_indices[0]) * _indices.size(), &_indices[0], GL_STATIC_DRAW);
-
-        // Send the position.
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), nullptr);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-
-        this->VAO = VAO_;
-        this->VBO = VBO_;
-    }
-
-    void Render() const {
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
-    }
-
-    virtual ~Mesh() {
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteBuffers(1, &VBO);
-    }
+    virtual ~Mesh();
 
     std::string id;
     GLuint VAO;

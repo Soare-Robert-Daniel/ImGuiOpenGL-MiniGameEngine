@@ -18,8 +18,8 @@ target_include_directories(cge PRIVATE
     C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/a33a4362b6f1475abecbeb21e7147b1b/include
     C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/a33a4362b6f1475abecbeb21e7147b1b/include/imgui
     C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/a33a4362b6f1475abecbeb21e7147b1b/include/backends
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glad/v0.1.36/d58ee23747ff411aae74b40986460499/include
     C:/Users/Robert/AppData/Local/.xmake/packages/g/glm/0.9.9+8/8335bab7c0314ab9921440de58961aac/include
+    C:/Users/Robert/AppData/Local/.xmake/packages/g/glad/v0.1.36/d58ee23747ff411aae74b40986460499/include
     C:/Users/Robert/AppData/Local/.xmake/packages/g/glew/2.2.0/618c7b92c819453eaa1a00a41d1d32e3/include
     C:/Users/Robert/AppData/Local/.xmake/packages/s/stb/2021.09.10/f94e80cd4717410f960b64150d6d3727/include
     C:/Users/Robert/AppData/Local/.xmake/packages/a/assimp/v5.2.4/84bc4aaf582640a3b4f6df4b4a5401ee/include
@@ -74,9 +74,11 @@ target_link_directories(cge PRIVATE
     C:/Users/Robert/AppData/Local/.xmake/packages/z/zlib/v1.2.12/b5ea843dabd742168c9611e216a46175/lib
 )
 target_sources(cge PRIVATE
+    src/gl_utils.cpp
     src/main.cpp
     src/Mesh.cpp
     src/ShaderLoader.cpp
+    src/gl_utils.h
     src/Mesh.h
     src/ShaderLoader.h
     src/Vertex.h

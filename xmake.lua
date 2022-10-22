@@ -21,7 +21,7 @@ target("cge")
     set_kind("binary")
     add_headerfiles("src/*.h")
     add_files("src/*.cpp")
-    add_packages("glfw", "imgui", "glad", "glm", "glew", "stb", "assimp")
+    add_packages("glfw", "imgui", "glm", "glad", "glew", "stb", "assimp")
     set_toolchains("msvc")
 
 
