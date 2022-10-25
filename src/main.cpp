@@ -97,7 +97,7 @@ int main() {
 		glClearColor(0.0f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-        check_gl_error();
+
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -120,6 +120,8 @@ int main() {
 
 
 		glfwPollEvents();
+
+        check_gl_error();
 
 	}
 
