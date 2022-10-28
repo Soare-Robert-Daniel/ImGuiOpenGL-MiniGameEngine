@@ -14,7 +14,7 @@ void Mesh::AddVertices(std::vector<CGE::Vertex> vertices) {
     _vertices = std::move(vertices);
 }
 
-void Mesh::CreateMesh() {
+void Mesh::LoadToGPU() {
     GLuint VAO_ = 0;
     GLuint VBO_ = 0;
     GLuint IBO_ = 0;
@@ -33,21 +33,15 @@ void Mesh::CreateMesh() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_indices[0]) * _indices.size(), &_indices[0], GL_STATIC_DRAW);
 
     // Send the position.
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), nullptr);
 
     // Send the color.
-    glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)(sizeof(glm::vec3)));
+    glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-    // Check for OpenGL errors
-//    if (GetOpenGLError() == GL_INVALID_OPERATION)
-//    {
-//        std::cout << "\t[NOTE] : For developers : This happens because OpenGL core spec >=3.1 forbids null VAOs." << std::endl;
-//    }
 
     this->VAO = VAO_;
     this->VBO = VBO_;
@@ -55,7 +49,8 @@ void Mesh::CreateMesh() {
 
 void Mesh::Render() const {
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 

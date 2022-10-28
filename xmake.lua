@@ -3,6 +3,8 @@
 add_rules("mode.debug", "mode.release")
 set_languages("cxx20")
 
+set_toolchains("msvc")
+
 -- Window Management
 add_requires("imgui", {configs = {glfw_opengl3 = true}})
 
@@ -22,7 +24,6 @@ target("cge")
     add_headerfiles("src/*.h")
     add_files("src/*.cpp")
     add_packages("glfw", "imgui", "glm", "glad", "glew", "stb", "assimp")
-    set_toolchains("msvc")
 
 
 --

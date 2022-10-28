@@ -23,7 +23,7 @@ public:
 
     void AddVertices(std::vector<CGE::Vertex> vertices);
 
-    void CreateMesh();
+    void LoadToGPU();
 
     void Render() const;
 

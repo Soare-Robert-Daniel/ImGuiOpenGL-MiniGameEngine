@@ -38,7 +38,7 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	GLFWwindow* window = glfwCreateWindow(800, 800, "CGE by Soare Robert Daniel", nullptr, nullptr);
 
@@ -49,6 +49,14 @@ int main() {
 	}
 
 	glfwMakeContextCurrent(window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
+    std::cout << "WINDOW CREATED." << std::endl;
 
 	gladLoadGL();
 	glViewport(0, 0, 800, 800);
@@ -62,73 +70,81 @@ int main() {
     shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
     const auto shaderProgram = shaderLoader->CreateProgramFromLoadedSources();
 
+    std::cout << "Shaders loaded." << std::endl;
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplOpenGL3_Init("#version 330 core");
+
+    std::cout << "ImGui Init." << std::endl;
 
     // +---------------- CREATE TRIANGLE ----------------+
     std::vector<CGE::Vertex> vertices = {
-            CGE::Vertex{.position = glm::vec3(-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Lower left corner
-            CGE::Vertex{.position = glm::vec3(0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Lower right corner
-            CGE::Vertex{.position = glm::vec3(0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Upper corner
+            CGE::Vertex{.position = glm::vec3(0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0, 1.f)}, // Lower left corner
+            CGE::Vertex{.position = glm::vec3(0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 0, 1.f)}, // Lower right corner
+            CGE::Vertex{.position = glm::vec3(-0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 1.0f, 1.f)}, // Upper corner
+            CGE::Vertex{.position = glm::vec3(-0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0le, 1.f)}, // Inner left
 
-            CGE::Vertex{.position = glm::vec3(-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner left
-            CGE::Vertex{.position = glm::vec3(0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner right
-            CGE::Vertex{.position = glm::vec3(0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner down
     };
 
     // Indices for vertices order
     const std::vector<GLuint> indices =
             {
-                    0, 3, 5, // Lower left triangle
-                    3, 2, 4, // Lower right triangle
-                    5, 4, 1 // Upper triangle
+                   0, 1, 3, // first triangle
+                   1, 2, 3  // second triangle
             };
 
     auto mesh = Mesh("test");
     mesh.AddIndices(indices);
     mesh.AddVertices(vertices);
-    mesh.CreateMesh();
+    mesh.LoadToGPU();
+
+    std::cout << "Mesh Created." << std::endl;
 
     // +---------------- Main Loop ----------------+
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(0.0f, 0.13f, 0.17f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
 
-        check_gl_error();
+        glfwPollEvents();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		
-		glUseProgram(shaderProgram);
-        mesh.Render();
-//		glBindVertexArray(VAO);
 
-//		glDrawArrays(GL_TRIANGLES, 0, 3);
+        {
+            ImGui::Begin("Custom Game Engine - Soare Robert Daniel");
+            ImGui::Text("Test UIS");
+            ImGui::End();
 
-		ImGui::Begin("Custom Game Engine - Soare Robert Daniel");
-		ImGui::Text("Test UIS");
-		ImGui::End();
+        }
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGui::Render();
 
+        {
+            // Resize
+            int display_w, display_h;
+            glfwGetFramebufferSize(window, &display_w, &display_h);
+            glViewport(0, 0, display_w, display_h);
+
+            glClearColor(0.30f, 0.13f, 0.17f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            glUseProgram(shaderProgram);
+            mesh.Render();
+            glUseProgram(0);
+
+            check_gl_error();
+        }
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(window);
-
-
-		glfwPollEvents();
 
 	}
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	
-//	glDeleteVertexArrays(1, &VAO);
-//	glDeleteBuffers(1, &VBO);
 
     shaderLoader->DeleteAllPrograms();
 

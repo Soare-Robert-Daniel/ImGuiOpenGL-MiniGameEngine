@@ -3,6 +3,7 @@
 //
 
 #include "ShaderLoader.h"
+#include <iostream>
 
 int ShaderLoader::shaderNumber;
 ShaderLoader* ShaderLoader::singleton_;
@@ -19,6 +20,16 @@ void ShaderLoader::LoadShaderSource(ShaderLoader::ShaderType type, const char *s
     }
 
     glShaderSource(shader, 1, &source, nullptr);
+    glCompileShader(shader);
+
+    int  success;
+    char infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
 
     shaderStack.push_back(shader);
 }
@@ -38,6 +49,16 @@ int ShaderLoader::CreateProgramFromLoadedSources() {
     }
 
     glLinkProgram( program );
+
+    int  success;
+    char infoLog[512];
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if(!success) {
+        glGetProgramInfoLog(program, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING\n" << infoLog << std::endl;
+    }
+
+
     shaderPrograms.insert(std::pair<int, GLuint>(id, program));
 
     for( auto& shader : shaderStack ) {
@@ -46,7 +67,7 @@ int ShaderLoader::CreateProgramFromLoadedSources() {
 
     shaderStack.clear();
 
-    return id;
+    return program;
 }
 
 void ShaderLoader::DeleteAllPrograms() {
