@@ -3,7 +3,13 @@
 add_rules("mode.debug", "mode.release")
 set_languages("cxx20")
 
-set_toolchains("msvc")
+-- Platform settings for compiler
+if is_host("windows") then
+   set_toolchains("msvc")
+end
+if is_host("macosx") then
+    set_toolchains("clang")
+end
 
 -- Window Management
 add_requires("imgui", {configs = {glfw_opengl3 = true}})

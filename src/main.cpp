@@ -87,6 +87,9 @@ int main() {
             CGE::Vertex{.position = glm::vec3(-0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 1.0f, 1.f)}, // Upper corner
             CGE::Vertex{.position = glm::vec3(-0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0le, 1.f)}, // Inner left
 
+            CGE::Vertex{.position = glm::vec3(-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner left
+            CGE::Vertex{.position = glm::vec3(0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner right
+            CGE::Vertex{.position = glm::vec3(0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner down
     };
 
     // Indices for vertices order
@@ -105,6 +108,8 @@ int main() {
 
     // +---------------- Main Loop ----------------+
 	while (!glfwWindowShouldClose(window)) {
+		glClearColor(0.0f, 0.13f, 0.17f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
         glfwPollEvents();
 
