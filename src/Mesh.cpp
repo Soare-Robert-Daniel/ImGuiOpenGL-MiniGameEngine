@@ -48,6 +48,9 @@ void Mesh::LoadToGPU() {
 }
 
 void Mesh::Render() const {
+    if( shader != nullptr ) {
+        shader->Use();
+    }
     glBindVertexArray(VAO);
     // glDrawArrays(GL_TRIANGLES, 0, 3);
     glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);

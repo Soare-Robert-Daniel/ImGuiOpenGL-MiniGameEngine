@@ -64,7 +64,7 @@ int ShaderLoader::CreateProgramFromLoadedSources() {
 
     Clean();
 
-    return id;
+    return program;
 }
 
 ShaderLoader *ShaderLoader::GetInstance() {

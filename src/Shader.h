@@ -12,22 +12,20 @@
 
 class Shader {
 public:
-    Shader() {
+    Shader() = default;
 
-    }
-
-    Shader(int id): id(id) {
+    explicit Shader(int id): id(id) {
 
     }
 
 private:
-    int id;
+    int id{};
     std::string fileName;
     std::vector<std::tuple<ShaderLoader::ShaderType, std::string>> files;
 
 public:
     void Use() const;
-    void AddFile(const ShaderLoader::ShaderType type, const std::string &filepath );
+    void AddFile(ShaderLoader::ShaderType type, const std::string &filepath );
     void LoadFiles();
     void Refresh();
     int getId() const;

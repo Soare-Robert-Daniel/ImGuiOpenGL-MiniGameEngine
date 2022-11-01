@@ -14,6 +14,7 @@
 #include "gl_utils.h"
 #include <filesystem>
 #include "Shader.h"
+#include <utility>
 
 // Vertex Shader source code
 const char* vertex_shader_source = "#version 330 core\n"
@@ -75,15 +76,16 @@ int main() {
 
     const auto shaderLoader = ShaderLoader::GetInstance();
 
-    const auto shader = new Shader();
-    shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.vert");
-    shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.frag");
+    std::shared_ptr<Shader> shader(new Shader());
+
+    shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
+    shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
     shader->LoadFiles();
 
     // shaderLoader->LoadShaderSource(ShaderLoader::VERTEX, vertex_shader_source);
     //shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
-    //shaderLoader->LoadShaderFromFile(ShaderLoader::VERTEX, "simple_vertex.vert");
-    //shaderLoader->LoadShaderFromFile(ShaderLoader::FRAGMENT, "simple_fragment.frag");
+    //shaderLoader->LoadShaderFromFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
+    //shaderLoader->LoadShaderFromFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
     //const auto shaderId = shaderLoader->CreateProgramFromLoadedSources();
     // const auto shaderProgram = shaderLoader->GetProgram( shaderId );
 
@@ -121,6 +123,8 @@ int main() {
     mesh.AddVertices(vertices);
     mesh.LoadToGPU();
 
+    mesh.shader = std::move(shader);
+
     std::cout << "Mesh Created." << std::endl;
 
     // +---------------- Main Loop ----------------+
@@ -153,7 +157,6 @@ int main() {
             glClear(GL_COLOR_BUFFER_BIT);
 
             // glUseProgram(shaderProgram);
-            shader->Use();
             mesh.Render();
             glUseProgram(0);
 

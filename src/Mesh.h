@@ -10,6 +10,7 @@
 #include "Vertex.h"
 #include <glad/glad.h>
 #include <iostream>
+#include "Shader.h"
 
 class Mesh {
 public:
@@ -32,6 +33,7 @@ public:
     std::string id;
     GLuint VAO;
     GLuint VBO;
+    std::shared_ptr<Shader> shader;
 
 private:
     std::vector<CGE::Vertex> _vertices;
