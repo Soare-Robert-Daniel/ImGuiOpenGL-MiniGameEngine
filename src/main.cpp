@@ -12,6 +12,8 @@
 #include "ShaderLoader.h"
 #include "Mesh.h"
 #include "gl_utils.h"
+#include <filesystem>
+#include "Shader.h"
 
 // Vertex Shader source code
 const char* vertex_shader_source = "#version 330 core\n"
@@ -32,7 +34,13 @@ const char* fragment_shader_source = "#version 330 core\n"
 "   FragColor = vColor;\n"
 "}\n\0";
 
+
 int main() {
+
+
+    auto p = std::filesystem::current_path();
+    std::cout << p << std::endl;
+
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -66,9 +74,18 @@ int main() {
 	glfwSwapBuffers(window);
 
     const auto shaderLoader = ShaderLoader::GetInstance();
-    shaderLoader->LoadShaderSource(ShaderLoader::VERTEX, vertex_shader_source);
-    shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
-    const auto shaderProgram = shaderLoader->CreateProgramFromLoadedSources();
+
+    const auto shader = new Shader();
+    shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.vert");
+    shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.frag");
+    shader->LoadFiles();
+
+    // shaderLoader->LoadShaderSource(ShaderLoader::VERTEX, vertex_shader_source);
+    //shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
+    //shaderLoader->LoadShaderFromFile(ShaderLoader::VERTEX, "simple_vertex.vert");
+    //shaderLoader->LoadShaderFromFile(ShaderLoader::FRAGMENT, "simple_fragment.frag");
+    //const auto shaderId = shaderLoader->CreateProgramFromLoadedSources();
+    // const auto shaderProgram = shaderLoader->GetProgram( shaderId );
 
     std::cout << "Shaders loaded." << std::endl;
 
@@ -85,7 +102,7 @@ int main() {
             CGE::Vertex{.position = glm::vec3(0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0, 1.f)}, // Lower left corner
             CGE::Vertex{.position = glm::vec3(0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 0, 1.f)}, // Lower right corner
             CGE::Vertex{.position = glm::vec3(-0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 1.0f, 1.f)}, // Upper corner
-            CGE::Vertex{.position = glm::vec3(-0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0le, 1.f)}, // Inner left
+            CGE::Vertex{.position = glm::vec3(-0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0, 1.f)}, // Inner left
 
             CGE::Vertex{.position = glm::vec3(-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner left
             CGE::Vertex{.position = glm::vec3(0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner right
@@ -135,7 +152,8 @@ int main() {
             glClearColor(0.30f, 0.13f, 0.17f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            glUseProgram(shaderProgram);
+            // glUseProgram(shaderProgram);
+            shader->Use();
             mesh.Render();
             glUseProgram(0);
 
@@ -145,13 +163,16 @@ int main() {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(window);
 
+        if( glfwGetKey(window, GLFW_KEY_R) ) {
+
+        }
+
 	}
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
-    shaderLoader->DeleteAllPrograms();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

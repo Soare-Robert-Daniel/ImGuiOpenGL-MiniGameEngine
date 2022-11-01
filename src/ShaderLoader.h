@@ -8,6 +8,9 @@
 #include <map>
 #include <vector>
 #include <glad/glad.h>
+#include <string>
+#include <iostream>
+#include <fstream>
 
 class ShaderLoader {
 protected:
@@ -16,18 +19,17 @@ protected:
         shaderNumber = 0;
     }
 
-    static ShaderLoader* singleton_;
     static int shaderNumber;
 
-    std::map<int, GLuint> shaderPrograms;
     std::vector<GLuint> shaderStack;
 public:
 
     enum ShaderType { VERTEX, FRAGMENT };
 
+    void LoadShaderFromFile(ShaderType type, const std::string &filepath );
     void LoadShaderSource(ShaderType type, const char* source);
     int CreateProgramFromLoadedSources();
-    void DeleteAllPrograms();
+    void Clean();
 
     virtual ~ShaderLoader();
 
@@ -48,6 +50,7 @@ public:
 
     static ShaderLoader *GetInstance();
 
+    static ShaderLoader* singleton_;
 };
 
 
