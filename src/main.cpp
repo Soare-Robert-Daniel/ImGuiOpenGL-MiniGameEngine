@@ -15,6 +15,7 @@
 #include <filesystem>
 #include "Shader.h"
 #include <utility>
+#include "Global.h"
 
 // Vertex Shader source code
 const char* vertex_shader_source = "#version 330 core\n"
@@ -82,6 +83,8 @@ int main() {
     shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
     shader->LoadFiles();
 
+    Global::AddShader("simple", shader);
+
     // shaderLoader->LoadShaderSource(ShaderLoader::VERTEX, vertex_shader_source);
     //shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
     //shaderLoader->LoadShaderFromFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
@@ -118,12 +121,14 @@ int main() {
                    1, 2, 3  // second triangle
             };
 
-    auto mesh = Mesh("test");
-    mesh.AddIndices(indices);
-    mesh.AddVertices(vertices);
-    mesh.LoadToGPU();
+    std::shared_ptr<Mesh> mesh(new Mesh("test"));
+    mesh->AddIndices(indices);
+    mesh->AddVertices(vertices);
+    mesh->LoadToGPU();
 
-    mesh.shader = std::move(shader);
+    mesh->shader = Global::GetShader("simple");
+
+    Global::AddMesh("square", mesh);
 
     std::cout << "Mesh Created." << std::endl;
 
@@ -157,7 +162,7 @@ int main() {
             glClear(GL_COLOR_BUFFER_BIT);
 
             // glUseProgram(shaderProgram);
-            mesh.Render();
+            Global::GetMesh("square")->Render();
             glUseProgram(0);
 
             check_gl_error();

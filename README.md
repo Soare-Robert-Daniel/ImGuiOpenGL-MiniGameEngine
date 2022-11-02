@@ -16,6 +16,13 @@ It will make a platform checking, you should see something like this:
 
 :warning: The toolchain is SET for MSVC! XMake will download the dependency and compile it to the compiler showed in console. If in the console show another compiler like MinGW, then you run the build with MSVC, you will have errors.
 
+Black Magic for setting the platform to x64 and generate `CMakeLists.txt` for VS or Clion.
+
+```bash
+xmake f -y -p windows -a x64 -m release
+xmake project -k cmake -y
+```
+
 ```bash
 cp shaders/* assets/* build/windows/x64/release/Debug/
 ```
