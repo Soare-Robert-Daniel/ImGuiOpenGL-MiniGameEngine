@@ -14,22 +14,27 @@ class Shader {
 public:
     Shader() = default;
 
-    explicit Shader(int id): id(id) {
+    explicit Shader(int id): programId(id) {
 
     }
 
 private:
-    int id{};
+    int programId{};
     std::string fileName;
     std::vector<std::tuple<ShaderLoader::ShaderType, std::string>> files;
 
 public:
     void Use() const;
+
+    void SetBool(const std::string& name, bool value);
+    void SetFloat(const std::string& name, float value);
+    void SetInt(const std::string& name, int value);
+
     void AddFile(ShaderLoader::ShaderType type, const std::string &filepath );
     void LoadFiles();
     void Refresh();
-    int getId() const;
 
+    int getId() const;
     void setId(int id);
 
     virtual ~Shader();

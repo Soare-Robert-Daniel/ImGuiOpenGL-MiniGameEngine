@@ -15,26 +15,8 @@
 #include <filesystem>
 #include "Shader.h"
 #include <utility>
+#include "Texture.h"
 #include "Global.h"
-
-// Vertex Shader source code
-const char* vertex_shader_source = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec4 color;\n"
-"out vec4 vColor;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"   vColor = color;"
-"}\0";
-//Fragment Shader source code
-const char* fragment_shader_source = "#version 330 core\n"
-"in vec4 vColor;\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vColor;\n"
-"}\n\0";
 
 
 int main() {
@@ -42,6 +24,8 @@ int main() {
 
     auto p = std::filesystem::current_path();
     std::cout << p << std::endl;
+
+
 
 	glfwInit();
 
@@ -75,25 +59,6 @@ int main() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glfwSwapBuffers(window);
 
-    const auto shaderLoader = ShaderLoader::GetInstance();
-
-    std::shared_ptr<Shader> shader(new Shader());
-
-    shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
-    shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
-    shader->LoadFiles();
-
-    Global::AddShader("simple", shader);
-
-    // shaderLoader->LoadShaderSource(ShaderLoader::VERTEX, vertex_shader_source);
-    //shaderLoader->LoadShaderSource(ShaderLoader::FRAGMENT, fragment_shader_source);
-    //shaderLoader->LoadShaderFromFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
-    //shaderLoader->LoadShaderFromFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
-    //const auto shaderId = shaderLoader->CreateProgramFromLoadedSources();
-    // const auto shaderProgram = shaderLoader->GetProgram( shaderId );
-
-    std::cout << "Shaders loaded." << std::endl;
-
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -102,16 +67,34 @@ int main() {
 
     std::cout << "ImGui Init." << std::endl;
 
-    // +---------------- CREATE TRIANGLE ----------------+
-    std::vector<CGE::Vertex> vertices = {
-            CGE::Vertex{.position = glm::vec3(0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0, 1.f)}, // Lower left corner
-            CGE::Vertex{.position = glm::vec3(0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 0, 1.f)}, // Lower right corner
-            CGE::Vertex{.position = glm::vec3(-0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 1.0f, 1.f)}, // Upper corner
-            CGE::Vertex{.position = glm::vec3(-0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0, 1.f)}, // Inner left
+    // +---------------- GLOBALS ----------------+
+    const auto shaderLoader = ShaderLoader::GetInstance();
 
-            CGE::Vertex{.position = glm::vec3(-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner left
-            CGE::Vertex{.position = glm::vec3(0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner right
-            CGE::Vertex{.position = glm::vec3(0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f), .color = glm::vec4(1, 1, 0, 1)}, // Inner down
+    // +---------------- TEXTURE LOADING ----------------+
+
+    std::shared_ptr<Texture> texture(new Texture());
+    texture->Load("simple_texture.jpg");
+    Global::AddTexture("simple", texture);
+
+    std::cout << "Textures loaded." << std::endl;
+
+    // +---------------- SHADER LOADING ----------------+
+    std::shared_ptr<Shader> shader(new Shader());
+
+    shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
+    shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
+    shader->LoadFiles();
+
+    Global::AddShader("simple", shader);
+
+    std::cout << "Shaders loaded." << std::endl;
+
+    // +---------------- CREATE SQUARE ----------------+
+    std::vector<CGE::Vertex> vertices = {
+            CGE::Vertex{.position = glm::vec3(0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0, 1.f), .normal = glm::vec3(0.0f, 0.0f, 0.0f), .textCoords = glm::vec2(1.0f, 1.0f)}, // Lower left corner
+            CGE::Vertex{.position = glm::vec3(0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 0, 1.f), .normal = glm::vec3(0.0f, 0.0f, 0.0f), .textCoords = glm::vec2(1.0f, 0.0f)}, // Lower right corner
+            CGE::Vertex{.position = glm::vec3(-0.5f, -0.5f, 0.0f), .color = glm::vec4(1.f, 0.f, 1.0f, 1.f), .normal = glm::vec3(0.0f, 0.0f, 0.0f), .textCoords = glm::vec2(0.0f, 0.0f)}, // Upper corner
+            CGE::Vertex{.position = glm::vec3(-0.5f, 0.5f, 0.0f), .color = glm::vec4(1.f, 1.f, 0, 1.f), .normal = glm::vec3(0.0f, 0.0f, 0.0f), .textCoords = glm::vec2(0.0f, 1.0f)}, // Inner left
     };
 
     // Indices for vertices order
@@ -125,8 +108,6 @@ int main() {
     mesh->AddIndices(indices);
     mesh->AddVertices(vertices);
     mesh->LoadToGPU();
-
-    mesh->shader = Global::GetShader("simple");
 
     Global::AddMesh("square", mesh);
 
@@ -161,8 +142,14 @@ int main() {
             glClearColor(0.30f, 0.13f, 0.17f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            // glUseProgram(shaderProgram);
-            Global::GetMesh("square")->Render();
+
+            {
+                Global::GetShader("simple")->Use();
+                Global::GetTexture("simple")->ActivateAndBind(0);
+                Global::GetShader("simple")->SetInt("texture0", 0);
+                Global::GetMesh("square")->Render();
+            }
+
             glUseProgram(0);
 
             check_gl_error();

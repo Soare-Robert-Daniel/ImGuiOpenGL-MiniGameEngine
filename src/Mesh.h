@@ -33,7 +33,6 @@ public:
     std::string id;
     GLuint VAO;
     GLuint VBO;
-    std::shared_ptr<Shader> shader;
 
 private:
     std::vector<CGE::Vertex> _vertices;

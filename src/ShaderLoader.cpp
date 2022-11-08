@@ -80,6 +80,8 @@ void ShaderLoader::LoadShaderFromFile(ShaderLoader::ShaderType type, const std::
 
     std::ifstream readFile( filepath.c_str() );
 
+    std::cout << "> Read shader file: " << filepath << std::endl;
+
     if( readFile.is_open() ) {
         while( std::getline(readFile, readLine) ) {
             fileContent += readLine + '\n';
@@ -87,10 +89,10 @@ void ShaderLoader::LoadShaderFromFile(ShaderLoader::ShaderType type, const std::
 
         readFile.close();
     } else {
-        std::cout << "[Shader Loading] " << filepath << " not opened" << std::endl;
+        std::cout << "|  [Shader Loading] " << filepath << " not opened" << std::endl;
     }
 
-    std::cout << fileContent << std::endl;
+    std::cout << "| File read complete." << std::endl;
 
     this->LoadShaderSource(type, fileContent.c_str());
 }

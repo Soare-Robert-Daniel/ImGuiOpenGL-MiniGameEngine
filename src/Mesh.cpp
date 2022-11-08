@@ -33,12 +33,20 @@ void Mesh::LoadToGPU() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_indices[0]) * _indices.size(), &_indices[0], GL_STATIC_DRAW);
 
     // Send the position.
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)0);
 
     // Send the color.
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)(sizeof(glm::vec3)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)(sizeof(glm::vec3)));
+
+    // Send the normal.
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec4)));
+
+    // Send the text coordinates.
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(CGE::Vertex), (void*)(sizeof(glm::vec3) + sizeof(glm::vec4) + sizeof(glm::vec3)));
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -48,9 +56,6 @@ void Mesh::LoadToGPU() {
 }
 
 void Mesh::Render() const {
-    if( shader != nullptr ) {
-        shader->Use();
-    }
     glBindVertexArray(VAO);
     // glDrawArrays(GL_TRIANGLES, 0, 3);
     glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);

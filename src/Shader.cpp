@@ -6,15 +6,15 @@
 #include "ShaderLoader.h"
 
 int Shader::getId() const {
-    return id;
+    return programId;
 }
 
 void Shader::setId(int id) {
-    Shader::id = id;
+    Shader::programId = id;
 }
 
 void Shader::Use() const {
-    glUseProgram(id);
+    glUseProgram(programId);
 }
 
 void Shader::AddFile(const ShaderLoader::ShaderType type, const std::string &filepath) {
@@ -22,7 +22,7 @@ void Shader::AddFile(const ShaderLoader::ShaderType type, const std::string &fil
 }
 
 void Shader::Refresh() {
-    glDeleteProgram( id );
+    glDeleteProgram(programId );
     LoadFiles();
 }
 
@@ -32,9 +32,21 @@ void Shader::LoadFiles() {
         ShaderLoader::singleton_->LoadShaderFromFile(std::get<0>(file), std::get<1>(file));
     }
 
-    id = ShaderLoader::singleton_->CreateProgramFromLoadedSources();
+    programId = ShaderLoader::singleton_->CreateProgramFromLoadedSources();
 }
 
 Shader::~Shader() {
-    glDeleteProgram( id );
+    glDeleteProgram(programId );
+}
+
+void Shader::SetInt(const std::string &name, int value) {
+    glUniform1i(glGetUniformLocation(programId, name.c_str()), value);
+}
+
+void Shader::SetFloat(const std::string &name, float value) {
+    glUniform1f(glGetUniformLocation(programId, name.c_str()), value);
+}
+
+void Shader::SetBool(const std::string &name, bool value) {
+    glUniform1i(glGetUniformLocation(programId, name.c_str()), (int)value);
 }

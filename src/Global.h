@@ -10,6 +10,7 @@
 #include <string_view>
 #include <string>
 #include "Shader.h"
+#include "Texture.h"
 #include "Mesh.h"
 
 class Global {
@@ -31,9 +32,18 @@ public:
         meshes[name] = std::move(mesh);
     }
 
+    static std::shared_ptr<Texture> GetTexture(const std::string& name) {
+        return textures[name];
+    }
+
+    static void AddTexture(const std::string& name, std::shared_ptr<Texture> texture) {
+        textures[name] = std::move(texture);
+    }
+
 private:
     inline static std::unordered_map<std::string, std::shared_ptr<Shader>> shaders;
     inline static std::unordered_map<std::string, std::shared_ptr<Mesh>> meshes;
+    inline static std::unordered_map<std::string, std::shared_ptr<Texture>> textures;
 };
 
 
