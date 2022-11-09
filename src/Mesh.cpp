@@ -56,13 +56,21 @@ void Mesh::LoadToGPU() {
 }
 
 void Mesh::Render() const {
-    glBindVertexArray(VAO);
+    Bind();
     // glDrawArrays(GL_TRIANGLES, 0, 3);
     glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+    Unbind();
 }
 
 Mesh::~Mesh() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+}
+
+void Mesh::Bind() const {
+    glBindVertexArray(VAO);
+}
+
+void Mesh::Unbind() {
+    glBindVertexArray(0);
 }

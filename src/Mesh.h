@@ -27,6 +27,8 @@ public:
     void LoadToGPU();
 
     void Render() const;
+    void Bind() const;
+    static void Unbind() ;
 
     virtual ~Mesh();
 

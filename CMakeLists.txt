@@ -74,6 +74,7 @@ target_link_directories(cge PRIVATE
     C:/Users/Robert/AppData/Local/.xmake/packages/z/zlib/v1.2.12/a454bc20f209450da098f8baf79a2a6f/lib
 )
 target_sources(cge PRIVATE
+    src/Camera.cpp
     src/GameObject.cpp
     src/gl_utils.cpp
     src/main.cpp
@@ -81,6 +82,7 @@ target_sources(cge PRIVATE
     src/Shader.cpp
     src/ShaderLoader.cpp
     src/Texture.cpp
+    src/Camera.h
     src/GameObject.h
     src/Global.h
     src/gl_utils.h

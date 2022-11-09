@@ -8,6 +8,8 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "ShaderLoader.h"
 
 class Shader {
@@ -26,9 +28,10 @@ private:
 public:
     void Use() const;
 
-    void SetBool(const std::string& name, bool value);
-    void SetFloat(const std::string& name, float value);
-    void SetInt(const std::string& name, int value);
+    void SetBool(const std::string& name, bool value) const;
+    void SetFloat(const std::string& name, float value) const;
+    void SetInt(const std::string& name, int value) const;
+    void SetMatrix(const std::string& name, glm::mat4 matrix) const;
 
     void AddFile(ShaderLoader::ShaderType type, const std::string &filepath );
     void LoadFiles();
