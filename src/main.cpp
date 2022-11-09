@@ -19,6 +19,9 @@
 #include "Global.h"
 #include "Camera.h"
 
+const float movementSpeed = 2.0f;
+
+void HandleInput(GLFWwindow *window, float deltaTime, std::shared_ptr<Camera> camera);
 
 int main() {
 
@@ -167,7 +170,9 @@ int main() {
     std::cout << "Mesh Created." << std::endl;
 
     // +---------------- CAMERA SETUP ----------------+
-    std::shared_ptr<Camera> camera(new Camera(glm::vec3(0)));
+    std::shared_ptr<Camera> camera(new Camera(glm::vec3(-10.0f, 0.0f, 0.0f)));
+    camera->SetDistance(10.0f);
+    camera->SetTarget(glm::vec3(0));
 
     float deltaTime = 0.0f;	// Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
@@ -175,14 +180,16 @@ int main() {
 
     // +---------------- Main Loop ----------------+
 	while (!glfwWindowShouldClose(window)) {
-        float currentFrame = glfwGetTime();
+        auto currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        HandleInput(window, deltaTime, camera);
 
         glClearColor(0.0f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-        glfwPollEvents();
+
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -192,7 +199,6 @@ int main() {
             ImGui::Begin("FPS");
             ImGui::Text("%.0f",   glm::round(1.0 / deltaTime));
             ImGui::End();
-
         }
 
         ImGui::Render();
@@ -206,7 +212,6 @@ int main() {
             glClearColor(0.30f, 0.13f, 0.17f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
             {
 //                glm::mat4 model = glm::mat4(1.0f);
 //                glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -218,13 +223,18 @@ int main() {
 
                 Global::GetShader("simple")->SetInt("texture0", 0);
 
+                // FPS CAMERA
+                {
+
+                }
+
                 // Global::GetShader("simple")->SetMatrix("model", model);
                 {
-                    const float radius = 10.0f;
-                    float camX = sin(glfwGetTime()) * radius;
-                    float camZ = cos(glfwGetTime()) * radius;
-                    camera->SetPosition(glm::vec3(camX, 0.0, camZ));
-                    camera->SetTarget(glm::vec3(0));
+//                    const float radius = 10.0f;
+//                    float camX = sin(glfwGetTime()) * radius;
+//                    float camZ = cos(glfwGetTime()) * radius;
+//                    camera->SetPosition(glm::vec3(camX, 0.0, camZ));
+//                    camera->SetTarget(glm::vec3(0));
 
                     glm::mat4 projection;
                     projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -253,7 +263,7 @@ int main() {
                     // calculate the model matrix for each object and pass it to shader before drawing
                     glm::mat4 model = glm::mat4(1.0f);
                     model = glm::translate(model, cubePositions[i]);
-                    float angle = 20.0f * i;
+                    float angle = 20.0f * (float)i;
                     if(i % 3 == 0)  // every 3rd iteration (including the first) we set the angle using GLFW's time function.
                         angle = (float)glfwGetTime() * 25.0f;
                     model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
@@ -273,11 +283,7 @@ int main() {
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(window);
-
-        if( glfwGetKey(window, GLFW_KEY_R) ) {
-
-        }
-
+        glfwPollEvents();
 	}
 
 	ImGui_ImplOpenGL3_Shutdown();
@@ -288,4 +294,34 @@ int main() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
+}
+
+void HandleInput(GLFWwindow *window, float deltaTime, std::shared_ptr<Camera> camera) {
+    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS ) {
+        camera->TranslateForward(deltaTime);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS ) {
+        camera->TranslateRight(-deltaTime);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS ) {
+        camera->TranslateForward(-deltaTime);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS ) {
+        camera->TranslateRight(deltaTime);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS ) {
+        camera->TranslateUpward(-deltaTime);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS ) {
+        camera->TranslateUpward(deltaTime);
+    }
+
+    if( glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS ) {
+        // Maybe reload the shaders.
+    }
 }
