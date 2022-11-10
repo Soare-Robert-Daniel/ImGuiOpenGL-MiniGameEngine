@@ -7,7 +7,6 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 // #include <stb/stb_image.h>
-// #include <assimp/aabb.h>
 
 #include "ShaderLoader.h"
 #include "Mesh.h"
@@ -18,6 +17,7 @@
 #include "Texture.h"
 #include "Global.h"
 #include "Camera.h"
+#include "Model.h"
 
 const float movementSpeed = 2.0f;
 
@@ -169,6 +169,10 @@ int main() {
 
     std::cout << "Mesh Created." << std::endl;
 
+    // +---------------- IMPORT MODEL ----------------+
+    std::shared_ptr<Model> model3D(new Model());
+    model3D->LoadFromFile("test_model.obj");
+
     // +---------------- CAMERA SETUP ----------------+
     std::shared_ptr<Camera> camera(new Camera(glm::vec3(-10.0f, 0.0f, 0.0f)));
     camera->SetDistance(10.0f);
@@ -176,6 +180,9 @@ int main() {
 
     float deltaTime = 0.0f;	// Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
+
+    glm::mat4 projection;
+    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
 
     // +---------------- Main Loop ----------------+
@@ -213,67 +220,60 @@ int main() {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             {
-//                glm::mat4 model = glm::mat4(1.0f);
-//                glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-
 
                 Global::GetShader("simple")->Use();
                 Global::GetTexture("simple")->ActivateAndBind(0);
 
                 Global::GetShader("simple")->SetInt("texture0", 0);
 
-                // FPS CAMERA
-                {
-
-                }
 
                 // Global::GetShader("simple")->SetMatrix("model", model);
                 {
-//                    const float radius = 10.0f;
-//                    float camX = sin(glfwGetTime()) * radius;
-//                    float camZ = cos(glfwGetTime()) * radius;
-//                    camera->SetPosition(glm::vec3(camX, 0.0, camZ));
-//                    camera->SetTarget(glm::vec3(0));
-
-                    glm::mat4 projection;
-                    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
                     Global::GetShader("simple")->SetMatrix("view", camera->GetView());
                     Global::GetShader("simple")->SetMatrix("projection", projection);
                 }
 
 
-                Global::GetMesh("square")->Bind();
+//                Global::GetMesh("square")->Bind();
+//
+//                glm::vec3 cubePositions[] = {
+//                        glm::vec3( 0.0f,  0.0f,  0.0f),
+//                        glm::vec3( 2.0f,  5.0f, -15.0f),
+//                        glm::vec3(-1.5f, -2.2f, -2.5f),
+//                        glm::vec3(-3.8f, -2.0f, -12.3f),
+//                        glm::vec3( 2.4f, -0.4f, -3.5f),
+//                        glm::vec3(-1.7f,  3.0f, -7.5f),
+//                        glm::vec3( 1.3f, -2.0f, -2.5f),
+//                        glm::vec3( 1.5f,  2.0f, -2.5f),
+//                        glm::vec3( 1.5f,  0.2f, -1.5f),
+//                        glm::vec3(-1.3f,  1.0f, -1.5f)
+//                };
+//                for(unsigned int i = 0; i < 10; i++)
+//                {
+//                    // calculate the model matrix for each object and pass it to shader before drawing
+//                    glm::mat4 model = glm::mat4(1.0f);
+//                    model = glm::translate(model, cubePositions[i]);
+//                    float angle = 20.0f * (float)i;
+//                    if(i % 3 == 0)  // every 3rd iteration (including the first) we set the angle using GLFW's time function.
+//                        angle = (float)glfwGetTime() * 25.0f;
+//                    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+//                    Global::GetShader("simple")->SetMatrix("model", model);
+//
+//
+//                    glDrawArrays(GL_TRIANGLES, 0, 36);
+//                }
+//
+//                Global::GetMesh("square")->Unbind();
 
-                glm::vec3 cubePositions[] = {
-                        glm::vec3( 0.0f,  0.0f,  0.0f),
-                        glm::vec3( 2.0f,  5.0f, -15.0f),
-                        glm::vec3(-1.5f, -2.2f, -2.5f),
-                        glm::vec3(-3.8f, -2.0f, -12.3f),
-                        glm::vec3( 2.4f, -0.4f, -3.5f),
-                        glm::vec3(-1.7f,  3.0f, -7.5f),
-                        glm::vec3( 1.3f, -2.0f, -2.5f),
-                        glm::vec3( 1.5f,  2.0f, -2.5f),
-                        glm::vec3( 1.5f,  0.2f, -1.5f),
-                        glm::vec3(-1.3f,  1.0f, -1.5f)
-                };
-                for(unsigned int i = 0; i < 10; i++)
                 {
-                    // calculate the model matrix for each object and pass it to shader before drawing
                     glm::mat4 model = glm::mat4(1.0f);
-                    model = glm::translate(model, cubePositions[i]);
-                    float angle = 20.0f * (float)i;
-                    if(i % 3 == 0)  // every 3rd iteration (including the first) we set the angle using GLFW's time function.
-                        angle = (float)glfwGetTime() * 25.0f;
+                    auto angle = (float)glfwGetTime() * 25.0f;
                     model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
                     Global::GetShader("simple")->SetMatrix("model", model);
+                    model3D->RenderMeshes();
 
-
-                    glDrawArrays(GL_TRIANGLES, 0, 36);
                 }
 
-                Global::GetMesh("square")->Unbind();
             }
 
             glUseProgram(0);

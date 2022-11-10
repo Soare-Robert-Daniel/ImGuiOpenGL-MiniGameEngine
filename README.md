@@ -24,7 +24,7 @@ xmake project -k cmake -y
 ```
 
 ```bash
-cp shaders/* assets/* build/windows/x64/release/Debug/
+cp shaders/* assets/* build/windows/x64/release/Debug/ && cp shaders/* assets/* build/windows/x64/release/
 ```
 
 
