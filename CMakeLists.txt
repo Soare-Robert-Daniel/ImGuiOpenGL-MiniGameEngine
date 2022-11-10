@@ -83,15 +83,5 @@ target_sources(cge PRIVATE
     src/Shader.cpp
     src/ShaderLoader.cpp
     src/Texture.cpp
-    src/Camera.h
-    src/GameObject.h
-    src/Global.h
-    src/gl_utils.h
-    src/Mesh.h
-    src/Model.h
-    src/Shader.h
-    src/ShaderLoader.h
-    src/Texture.h
-    src/Vertex.h
 )
 
