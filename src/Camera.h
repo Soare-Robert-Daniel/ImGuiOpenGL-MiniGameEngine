@@ -5,9 +5,10 @@
 #ifndef CGE_CAMERA_H
 #define CGE_CAMERA_H
 
-
 #include <glm/glm.hpp>
 #include "emath.h"
+
+using namespace emath;
 
 class Camera {
 public:

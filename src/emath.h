@@ -6,55 +6,53 @@
 #define CGE_EMATH_H
 #include <glm/glm.hpp>
 
-using namespace glm;
-
 namespace emath {
-    vec3 v_add(vec3 a, vec3 b) {
+    inline glm::vec3 v_add(glm::vec3 a, glm::vec3 b) {
         return a + b;
     }
 
-    vec2 v_add(vec2 a, vec2 b){
+    inline glm::vec2 v_add(glm::vec2 a, glm::vec2 b){
         return a + b;
     }
 
-    vec3 v_mult(vec3 a, float k) {
+    inline glm::vec3 v_mult(glm::vec3 a, float k) {
         return a * k;
     }
 
-    vec2 v_mult(vec2 a, float k) {
+    inline glm::vec2 v_mult(glm::vec2 a, float k) {
         return a * k;
     }
 
-    float v_dot(vec3 a, vec3 b) {
-        return dot(a, b);
+    inline float v_dot(glm::vec3 a, glm::vec3 b) {
+        return glm::dot(a, b);
     }
 
-    vec3 v_cross(vec3 a, vec3 b) {
-        return cross(a, b);
+    inline glm::vec3 v_cross(glm::vec3 a, glm::vec3 b) {
+        return glm::cross(a, b);
     }
 
-    float v_dist(vec3 a, vec3 b) {
-        return distance(a, b);
+    inline float v_dist(glm::vec3 a, glm::vec3 b) {
+        return glm::distance(a, b);
     }
 
-    float v_dist(vec2 a, vec2 b) {
-        return distance(a, b);
+    inline float v_dist(glm::vec2 a, glm::vec2 b) {
+        return glm::distance(a, b);
     }
 
-    vec3 v_norm(vec3 a) {
-        return normalize(a);
+    inline glm::vec3 v_norm(glm::vec3 a) {
+        return glm::normalize(a);
     }
 
-    vec2 v_norm(vec2 a) {
-        return normalize(a);
+    inline glm::vec2 v_norm(glm::vec2 a) {
+        return glm::normalize(a);
     }
 
-    float v_length(vec3 a) {
-        return length(a);
+    inline float v_length(glm::vec3 a) {
+        return glm::length(a);
     }
 
-    float v_length(vec2 a) {
-        return length(a);
+    inline float v_length(glm::vec2 a) {
+        return glm::length(a);
     }
 }
 

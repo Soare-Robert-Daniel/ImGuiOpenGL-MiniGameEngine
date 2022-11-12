@@ -5,8 +5,6 @@
 #include <glm/ext/matrix_transform.hpp>
 #include "Camera.h"
 
-using namespace emath;
-
 Camera::Camera(const glm::vec3 &pos) : pos(pos) {}
 
 Camera::~Camera() {

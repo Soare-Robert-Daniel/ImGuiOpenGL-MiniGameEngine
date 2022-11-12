@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 // #include <stb/stb_image.h>
 
-#include "emath.h"
+
 #include "ShaderLoader.h"
 #include "Mesh.h"
 #include "gl_utils.h"
@@ -19,6 +19,7 @@
 #include "Global.h"
 #include "Camera.h"
 #include "Model.h"
+#include "emath.h"
 
 const float movementSpeed = 2.0f;
 
