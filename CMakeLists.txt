@@ -75,6 +75,7 @@ target_link_directories(cge PRIVATE
 )
 target_sources(cge PRIVATE
     src/Camera.cpp
+    src/emath.cpp
     src/GameObject.cpp
     src/gl_utils.cpp
     src/main.cpp

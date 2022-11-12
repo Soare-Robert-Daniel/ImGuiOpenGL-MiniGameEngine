@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 // #include <stb/stb_image.h>
 
+#include "emath.h"
 #include "ShaderLoader.h"
 #include "Mesh.h"
 #include "gl_utils.h"

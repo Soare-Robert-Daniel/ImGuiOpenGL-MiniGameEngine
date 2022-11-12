@@ -5,6 +5,8 @@
 #include <glm/ext/matrix_transform.hpp>
 #include "Camera.h"
 
+using namespace emath;
+
 Camera::Camera(const glm::vec3 &pos) : pos(pos) {}
 
 Camera::~Camera() {
@@ -12,10 +14,10 @@ Camera::~Camera() {
 }
 
 void Camera::SetTarget(glm::vec3 targetPosition) {
-    forward = glm::normalize(targetPosition - pos);
+    forward = v_norm(targetPosition - pos);
     glm::vec3 _up = glm::vec3(0.0f, 1.0f, 0.0f);
-    right = glm::normalize(glm::cross(forward, _up));
-    up = glm::cross(right, forward);
+    right = v_norm(v_cross(forward, _up));
+    up = v_cross(right, forward);
     CalculateView();
 }
 
@@ -30,6 +32,7 @@ glm::mat4 Camera::GetView() {
 
 void Camera::SetDistance(float distance) {
     dist = distance;
+
     CalculateView();
 }
 
@@ -38,72 +41,73 @@ void Camera::CalculateView() {
 }
 
 void Camera::MoveForward(float distance) {
-    glm::vec3 dir = glm::normalize(glm::vec3(forward.x, 0, forward.z));
+    glm::vec3 dir = v_norm(glm::vec3(forward.x, 0, forward.z));
     pos += dir * distance;
+
     CalculateView();
 }
 
 void Camera::TranslateForward(float distance) {
-    glm::vec3 dir = glm::normalize(forward);
+    glm::vec3 dir = v_norm(forward);
     pos += dir * distance;
+
     CalculateView();
 }
 
 void Camera::TranslateUpward(float distance) {
-    glm::vec3 dir = glm::normalize(up);
+    glm::vec3 dir = v_norm(up);
     pos += dir * distance;
+
     CalculateView();
 }
 
 void Camera::TranslateRight(float distance) {
-    glm::vec3 dir = glm::normalize(glm::vec3(right.x, 0, right.z));
+    glm::vec3 dir = v_norm(glm::vec3(right.x, 0, right.z));
     pos += dir * distance;
+
     CalculateView();
 }
 
-void Camera::RotateFirstPerson_OX(float angle) {
+void Camera::RotateOX_FirstPerson(float angle) {
     glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), angle, right);
-    forward = glm::vec3( rotMat * glm::vec4(forward, 1));
-    forward = glm::normalize(forward);
+    forward = v_norm(glm::vec3( rotMat * glm::vec4(forward, 1)));
+    up = v_cross(right, forward);
 
-    up = glm::cross(right, forward);
     CalculateView();
 }
 
-void Camera::RotateFirstPerson_OY(float angle) {
+void Camera::RotateOY_FirstPerson(float angle) {
     glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 1, 0));
-    forward = glm::vec3(rotMat * glm::vec4(forward, 1));
-    forward = glm::normalize(forward);
+    forward = v_norm(glm::vec3(rotMat * glm::vec4(forward, 1)));
+    right = v_cross(forward, glm::vec3(0, 1, 0));
+    up = v_cross(right, forward);
 
-    right = glm::cross(forward, glm::vec3(0, 1, 0));
-    up = glm::cross(right, forward);
     CalculateView();
 }
 
-void Camera::RotateFirstPerson_OZ(float angle) {
+void Camera::RotateOZ_FirstPerson(float angle) {
     glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), angle, forward);
-    right = glm::vec3(rotMat * glm::vec4(right, 1));
-    right = glm::normalize(right);
+    right = v_norm(glm::vec3(rotMat * glm::vec4(right, 1)));
+    up = v_cross(right, forward);
 
-    up = glm::cross(right, forward);
     CalculateView();
 }
 
-void Camera::RotateThirdPerson_OX(float angle) {
+void Camera::RotateOX_ThirdPerson(float angle) {
     TranslateForward(dist);
-    RotateFirstPerson_OX(angle);
+    RotateOX_FirstPerson(angle);
     TranslateForward(-dist);
 }
 
-void Camera::RotateThirdPerson_OY(float angle) {
+void Camera::RotateOY_ThirdPerson(float angle) {
     TranslateForward(dist);
-    RotateFirstPerson_OY(angle);
+    RotateOY_FirstPerson(angle);
     TranslateForward(-dist);
 }
 
-void Camera::RotateThirdPerson_OZ(float angle) {
+void Camera::RotateOZ_ThirdPerson(float angle) {
     TranslateForward(dist);
-    RotateFirstPerson_OZ(angle);
+    RotateOZ_FirstPerson(angle);
     TranslateForward(-dist);
 }
 

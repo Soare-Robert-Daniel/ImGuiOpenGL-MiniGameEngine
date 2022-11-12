@@ -7,6 +7,7 @@
 
 
 #include <glm/glm.hpp>
+#include "emath.h"
 
 class Camera {
 public:
@@ -22,12 +23,12 @@ public:
     void TranslateForward(float distance);
     void TranslateUpward(float distance);
     void TranslateRight(float distance);
-    void RotateFirstPerson_OX(float angle);
-    void RotateFirstPerson_OY(float angle);
-    void RotateFirstPerson_OZ(float angle);
-    void RotateThirdPerson_OX(float angle);
-    void RotateThirdPerson_OY(float angle);
-    void RotateThirdPerson_OZ(float angle);
+    void RotateOX_FirstPerson(float angle);
+    void RotateOY_FirstPerson(float angle);
+    void RotateOZ_FirstPerson(float angle);
+    void RotateOX_ThirdPerson(float angle);
+    void RotateOY_ThirdPerson(float angle);
+    void RotateOZ_ThirdPerson(float angle);
     glm::vec3 GetTargetPosition();
     glm::mat4 GetView();
 
