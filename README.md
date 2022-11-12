@@ -1,3 +1,7 @@
+## State 
+
+[![Progress](https://blog.teamsatchel.com/hs-fs/hubfs/Blog%20Thumbnails/Understanding%20Progress%208%20and%20Attainment%208.png?width=3125&name=Understanding%20Progress%208%20and%20Attainment%208.png)](docs/current_progress_2022_11_12.mp4)
+
 ### Installation / Instalare
 
 Install [XMake](https://xmake.io/#/guide/installation). Make sure to have [MSVC compiler for x64 set in the Console](https://learn.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170).
