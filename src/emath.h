@@ -15,11 +15,11 @@ namespace emath {
         return a + b;
     }
 
-    inline glm::vec3 v_mult(glm::vec3 a, float k) {
+    inline glm::vec3 v_mul_scalar(glm::vec3 a, float k) {
         return a * k;
     }
 
-    inline glm::vec2 v_mult(glm::vec2 a, float k) {
+    inline glm::vec2 v_mul_scalar(glm::vec2 a, float k) {
         return a * k;
     }
 
@@ -53,6 +53,14 @@ namespace emath {
 
     inline float v_length(glm::vec2 a) {
         return glm::length(a);
+    }
+
+    inline glm::mat4 m_rotate(glm::mat4 matrix, float angle, glm::vec3 axis) {
+        return glm::rotate(matrix, angle, axis);
+    }
+
+    inline glm::mat4 m_lookAt( glm::vec3 position, glm::vec3 target, glm::vec3 up ) {
+        return glm::lookAt(position, target, up);
     }
 }
 

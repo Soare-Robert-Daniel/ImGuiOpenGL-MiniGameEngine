@@ -35,7 +35,7 @@ void Camera::SetDistance(float distance) {
 }
 
 void Camera::CalculateView() {
-    view = glm::lookAt(pos, pos + forward, up );
+    view = m_lookAt(pos, pos + forward, up );
 }
 
 void Camera::MoveForward(float distance) {
@@ -67,7 +67,7 @@ void Camera::TranslateRight(float distance) {
 }
 
 void Camera::RotateOX_FirstPerson(float angle) {
-    glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), angle, right);
+    glm::mat4 rotMat = m_rotate(glm::mat4(1.0f), angle, right);
     forward = v_norm(glm::vec3( rotMat * glm::vec4(forward, 1)));
     up = v_cross(right, forward);
 
@@ -75,7 +75,7 @@ void Camera::RotateOX_FirstPerson(float angle) {
 }
 
 void Camera::RotateOY_FirstPerson(float angle) {
-    glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 1, 0));
+    glm::mat4 rotMat = m_rotate(glm::mat4(1.0f), angle, glm::vec3(0, 1, 0));
     forward = v_norm(glm::vec3(rotMat * glm::vec4(forward, 1)));
     right = v_cross(forward, glm::vec3(0, 1, 0));
     up = v_cross(right, forward);
@@ -84,7 +84,7 @@ void Camera::RotateOY_FirstPerson(float angle) {
 }
 
 void Camera::RotateOZ_FirstPerson(float angle) {
-    glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), angle, forward);
+    glm::mat4 rotMat = m_rotate(glm::mat4(1.0f), angle, forward);
     right = v_norm(glm::vec3(rotMat * glm::vec4(right, 1)));
     up = v_cross(right, forward);
 

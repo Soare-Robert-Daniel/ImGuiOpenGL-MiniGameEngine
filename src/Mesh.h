@@ -21,11 +21,8 @@ public:
     }
 
     void AddIndices( std::vector<GLuint> indices);
-
     void AddVertices(std::vector<CGE::Vertex> vertices);
-
     void LoadToGPU();
-
     void Render() const;
     void Bind() const;
     static void Unbind() ;

@@ -6,8 +6,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-// #include <stb/stb_image.h>
-
 
 #include "ShaderLoader.h"
 #include "Mesh.h"
@@ -90,7 +88,6 @@ int main() {
 
     // +---------------- SHADER LOADING ----------------+
     std::shared_ptr<Shader> shader(new Shader());
-
     shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
     shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
     shader->LoadFiles();
@@ -270,7 +267,7 @@ int main() {
                 {
                     glm::mat4 model = glm::mat4(1.0f);
                     auto angle = (float)glfwGetTime() * 25.0f;
-                    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+                    model = emath::m_rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
                     Global::GetShader("simple")->SetMatrix("model", model);
                     model3D->RenderMeshes();
 

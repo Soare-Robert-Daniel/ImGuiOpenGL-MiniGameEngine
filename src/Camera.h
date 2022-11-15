@@ -34,12 +34,12 @@ public:
     glm::mat4 GetView();
 
 private:
-    float dist = 1.0f;
-    glm::vec3 pos;
-    glm::vec3 forward;
-    glm::vec3 up;
-    glm::vec3 right;
-    glm::mat4 view;
+    float dist = 1.0f; // distanta de la camera la caracter
+    glm::vec3 pos; // pozitia
+    glm::vec3 forward; // directia inainte
+    glm::vec3 up; // deasupra camerei
+    glm::vec3 right; // dreapta camerei
+    glm::mat4 view; // matricea cu spatiul camerei
 };
 
 
