@@ -5,6 +5,7 @@
 #ifndef CGE_EMATH_H
 #define CGE_EMATH_H
 #include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
 
 namespace emath {
     inline glm::vec3 v_add(glm::vec3 a, glm::vec3 b) {

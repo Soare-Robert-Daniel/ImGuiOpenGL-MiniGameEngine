@@ -70,6 +70,7 @@ target_link_options(cge PRIVATE
 )
 target_sources(cge PRIVATE
     src/Mesh.cpp
+    src/CameraMovement.cpp
     src/Camera.cpp
     src/GameObject.cpp
     src/Texture.cpp

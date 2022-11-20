@@ -1,23 +1,24 @@
+#include <memory>
+#include <filesystem>
+#include <iostream>
+
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-
-#include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+
 #include "ShaderLoader.h"
 #include "Mesh.h"
 #include "gl_utils.h"
-#include <filesystem>
 #include "Shader.h"
-#include <utility>
 #include "Texture.h"
 #include "Global.h"
-#include "Camera.h"
 #include "Model.h"
 #include "emath.h"
+#include "Camera.h"
 #include "CameraMovement.h"
 
 const float movementSpeed = 2.0f;
@@ -182,6 +183,10 @@ int main()
     camera->SetDistance(10.0f);
     camera->SetTarget(glm::vec3(0));
 
+    CameraMovement &cameraMovement = CameraMovement::GetInstance();
+    cameraMovement.SetCamera(camera);
+    cameraMovement.RegisterInputCallbackTo(window);
+
     float deltaTime = 0.0f; // Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
 
@@ -195,7 +200,8 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        HandleInput(window, deltaTime, camera);
+        cameraMovement.SetSpeed(deltaTime * 10.0f);
+        // HandleInput(window, deltaTime, camera);
 
         glClearColor(0.0f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
