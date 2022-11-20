@@ -4,6 +4,9 @@
 
 #include "Texture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 void Texture::Activate() {
     glBindTexture(GL_TEXTURE_2D, texture);
 }
@@ -33,13 +36,13 @@ void Texture::Load(std::string filename) {
         std::cout << "|  Loading texture to GPU. Width: " << width << ", Height: " << height  << std::endl;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+        std::cout << "|  Texture Loaded" << std::endl;
     }
     else
     {
         std::cout << "|  Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
-    std::cout << "|  Texture Loaded" << std::endl;
 }
 
 Texture::~Texture() {

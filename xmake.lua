@@ -30,10 +30,7 @@ target("cge")
     set_kind("binary")
     -- add_headerfiles("src/*.h")
     add_files("src/*.cpp")
-    add_packages("opengl","glfw", "imgui", "glm", "glad", "glew", "stb", "assimp")
-    if is_plat("macosx") then
-        add_mxxflags("-lglfw3 -lglew -framework Cocoa -framework OpenGL -framework IOKit -DAPPLE_GL4")
-    end
+    add_packages("opengl", "glfw", "imgui", "glm", "glad", "glew", "stb", "assimp")
 
 
 --
