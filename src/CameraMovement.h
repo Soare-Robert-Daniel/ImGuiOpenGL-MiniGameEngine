@@ -12,13 +12,20 @@ public:
 
     static CameraMovement& GetInstance();
     void SetCamera(const std::shared_ptr<Camera>& camera);
-    void RegisterInputCallbackTo(GLFWwindow* window);
+    void RegisterKeyboardInputCallbackTo(GLFWwindow* window);
+    void RegisterMouseInputCallbackTo(GLFWwindow* window);
     void SetSpeed(float speed);
+    void SetMouseSensitivity(float sens);
 
 private:
     static void InputCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void MouseCallback(GLFWwindow* window, double xPos, double yPos);
     std::shared_ptr<Camera> camera;
     float speed;
+    float mouseSensitivity;
+
+    float lastXPos;
+    float lastYPos;
 
     CameraMovement();
     CameraMovement(CameraMovement const&); // prevent copies

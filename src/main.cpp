@@ -71,6 +71,9 @@ int main()
 
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     glfwSwapBuffers(window);
 
     IMGUI_CHECKVERSION();
@@ -184,8 +187,10 @@ int main()
     camera->SetTarget(glm::vec3(0));
 
     CameraMovement &cameraMovement = CameraMovement::GetInstance();
+    cameraMovement.SetMouseSensitivity(0.0001f);
     cameraMovement.SetCamera(camera);
-    cameraMovement.RegisterInputCallbackTo(window);
+    cameraMovement.RegisterKeyboardInputCallbackTo(window);
+    cameraMovement.RegisterMouseInputCallbackTo(window);
 
     float deltaTime = 0.0f; // Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
