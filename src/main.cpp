@@ -1,6 +1,8 @@
 #include <memory>
 #include <filesystem>
 #include <iostream>
+#include <vector>
+#include <ranges>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -21,6 +23,8 @@
 #include "Camera.h"
 #include "CameraMovement.h"
 #include "ScreenBuffer.h"
+#include "GameObject.h"
+#include "RenderComponent.h"
 
 const float movementSpeed = 2.0f;
 
@@ -28,7 +32,6 @@ void HandleInput(GLFWwindow *window, float deltaTime, std::shared_ptr<Camera> ca
 
 int main()
 {
-
     auto p = std::filesystem::current_path();
     std::cout << p << std::endl;
 
@@ -192,7 +195,7 @@ int main()
     cameraMovement.SetMouseSensitivity(0.0001f);
     cameraMovement.SetCamera(camera);
     cameraMovement.RegisterKeyboardInputCallbackTo(window);
-    cameraMovement.RegisterMouseInputCallbackTo(window);
+    CameraMovement::RegisterMouseInputCallbackTo(window);
 
     float deltaTime = 0.0f; // Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
@@ -206,6 +209,15 @@ int main()
     screenBuffer->height = 800;
     screenBuffer->Create();
 
+    // Scene Root
+
+    std::shared_ptr<GameObject> sceneRoot(new GameObject());
+
+    std::shared_ptr<GameObject> cube(new GameObject());
+    cube->AddComponent((std::shared_ptr<Component>)(new RenderComponent()));
+    sceneRoot->AddChildren(cube);
+
+    sceneRoot->Start();
 
     // +---------------- Main Loop ----------------+
     while (!glfwWindowShouldClose(window))
@@ -275,6 +287,8 @@ int main()
                 //                }
                 //
                 //                Global::GetMesh("square")->Unbind();
+
+                sceneRoot->Update();
 
                 {
                     glm::mat4 model = glm::mat4(1.0f);

@@ -72,11 +72,14 @@ target_sources(cge PRIVATE
     src/Mesh.cpp
     src/CameraMovement.cpp
     src/Camera.cpp
+    src/RenderComponent.cpp
     src/GameObject.cpp
+    src/Component.cpp
     src/Texture.cpp
     src/emath.cpp
     src/Shader.cpp
     src/ScreenBuffer.cpp
+    src/TransformComponent.cpp
     src/Model.cpp
     src/gl_utils.cpp
     src/ShaderLoader.cpp
