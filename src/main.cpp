@@ -20,6 +20,7 @@
 #include "emath.h"
 #include "Camera.h"
 #include "CameraMovement.h"
+#include "ScreenBuffer.h"
 
 const float movementSpeed = 2.0f;
 
@@ -199,6 +200,13 @@ int main()
     glm::mat4 projection;
     projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
+    // Screen Frame Buffer
+    std::unique_ptr<ScreenBuffer> screenBuffer(new ScreenBuffer());
+    screenBuffer->width = 800;
+    screenBuffer->height = 800;
+    screenBuffer->Create();
+
+
     // +---------------- Main Loop ----------------+
     while (!glfwWindowShouldClose(window))
     {
@@ -209,21 +217,10 @@ int main()
         cameraMovement.SetSpeed(deltaTime * 10.0f);
         // HandleInput(window, deltaTime, camera);
 
-        glClearColor(0.0f, 0.13f, 0.17f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        screenBuffer->BindBuffer();
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        {
-            ImGui::Begin("FPS");
-            ImGui::Text("%.0f", glm::round(1.0 / deltaTime));
-            ImGui::Text("Cursor Lock: %s", CameraMovement::GetInstance().lockMouse ? "ON" : "OFF" );
-            ImGui::End();
-        }
-
-        ImGui::Render();
 
         {
             // Resize
@@ -290,6 +287,36 @@ int main()
             glUseProgram(0);
 
             check_gl_error();
+            screenBuffer->UnbindBuffer();
+            glClearColor(0.0f, 0.13f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+
+        {
+            ImGui::NewFrame();
+
+            {
+                ImGui::Begin("FPS");
+                ImGui::Text("%.0f", glm::round(1.0 / deltaTime));
+                ImGui::Text("Cursor Lock: %s", CameraMovement::GetInstance().lockMouse ? "ON" : "OFF" );
+                ImGui::End();
+            }
+
+            {
+                ImGui::Begin("Game");
+                {
+                    ImGui::BeginChild("Render");
+                    // Get the size of the child (i.e. the whole draw size of the windows).
+                    ImVec2 wsize = ImGui::GetWindowSize();
+                    // Because I use the texture from OpenGL, I need to invert the V from the UV.
+                    ImGui::Image((ImTextureID)(intptr_t)screenBuffer->texture, wsize, ImVec2(0, 1), ImVec2(1, 0));
+                    ImGui::EndChild();
+                }
+                ImGui::End();
+            }
+            ImGui::ShowMetricsWindow();
+
+            ImGui::Render();
         }
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
