@@ -14,6 +14,7 @@ public:
     void SetCamera(const std::shared_ptr<Camera>& camera);
     void RegisterKeyboardInputCallbackTo(GLFWwindow* window);
     void RegisterMouseInputCallbackTo(GLFWwindow* window);
+    void ProcessInputPerFrame(GLFWwindow *window) const;
     void SetSpeed(float speed);
     void SetMouseSensitivity(float sens);
 

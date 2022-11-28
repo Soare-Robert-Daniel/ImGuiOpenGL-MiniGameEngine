@@ -15,38 +15,38 @@ void CameraMovement::RegisterKeyboardInputCallbackTo(GLFWwindow *window) {
 
 void CameraMovement::InputCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
 
-    auto camera = CameraMovement::GetInstance().camera;
-    auto speed = CameraMovement::GetInstance().speed;
-
-    if (key == GLFW_KEY_W && action == GLFW_REPEAT)
-    {
-        camera->TranslateForward(speed);
-    }
-
-    if (key == GLFW_KEY_A && action == GLFW_REPEAT)
-    {
-        camera->TranslateRight(-speed);
-    }
-
-    if (key == GLFW_KEY_S && action == GLFW_REPEAT)
-    {
-        camera->TranslateForward(-speed);
-    }
-
-    if (key == GLFW_KEY_D && action == GLFW_REPEAT)
-    {
-        camera->TranslateRight(speed);
-    }
-
-    if (key == GLFW_KEY_Q && action == GLFW_REPEAT)
-    {
-        camera->TranslateUpward(-speed);
-    }
-
-    if (key == GLFW_KEY_R && action == GLFW_REPEAT)
-    {
-        camera->TranslateUpward(speed);
-    }
+//    auto camera = CameraMovement::GetInstance().camera;
+//    auto speed = CameraMovement::GetInstance().speed;
+//
+//    if (key == GLFW_KEY_W && action == GLFW_REPEAT)
+//    {
+//        camera->TranslateForward(speed);
+//    }
+//
+//    if (key == GLFW_KEY_A && action == GLFW_REPEAT)
+//    {
+//        camera->TranslateRight(-speed);
+//    }
+//
+//    if (key == GLFW_KEY_S && action == GLFW_REPEAT)
+//    {
+//        camera->TranslateForward(-speed);
+//    }
+//
+//    if (key == GLFW_KEY_D && action == GLFW_REPEAT)
+//    {
+//        camera->TranslateRight(speed);
+//    }
+//
+//    if (key == GLFW_KEY_Q && action == GLFW_REPEAT)
+//    {
+//        camera->TranslateUpward(-speed);
+//    }
+//
+//    if (key == GLFW_KEY_R && action == GLFW_REPEAT)
+//    {
+//        camera->TranslateUpward(speed);
+//    }
 
     if(mods == GLFW_MOD_CONTROL) {
         CameraMovement::GetInstance().lockMouse = !CameraMovement::GetInstance().lockMouse;
@@ -56,8 +56,6 @@ void CameraMovement::InputCallback(GLFWwindow *window, int key, int scancode, in
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
-
-    std::cout << "Input " << key << " speed: " << speed << " action: " << action  << std::endl;
 }
 
 CameraMovement &CameraMovement::GetInstance() {
@@ -95,4 +93,36 @@ void CameraMovement::MouseCallback(GLFWwindow *window, double xPos, double yPos)
 
 void CameraMovement::SetMouseSensitivity(float sens) {
     mouseSensitivity = sens;
+}
+
+void CameraMovement::ProcessInputPerFrame(GLFWwindow *window) const {
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        camera->TranslateForward(speed);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        camera->TranslateRight(-speed);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        camera->TranslateForward(-speed);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        camera->TranslateRight(speed);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+        camera->TranslateUpward(-speed);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        camera->TranslateUpward(speed);
+    }
 }

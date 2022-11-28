@@ -215,6 +215,7 @@ int main()
         lastFrame = currentFrame;
 
         cameraMovement.SetSpeed(deltaTime * 10.0f);
+        cameraMovement.ProcessInputPerFrame(window);
         // HandleInput(window, deltaTime, camera);
 
         screenBuffer->BindBuffer();
