@@ -23,6 +23,8 @@ public:
     void CreateTexture();
     void CreateRender();
     void BindBuffer() const;
+    bool NeedToResize(int w, int h);
+    void Resize(int w, int h);
     static void UnbindBuffer();
 
     void Delete();

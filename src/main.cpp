@@ -225,9 +225,9 @@ int main()
 
         {
             // Resize
-            int display_w, display_h;
-            glfwGetFramebufferSize(window, &display_w, &display_h);
-            glViewport(0, 0, display_w, display_h);
+//            int display_w, display_h;
+//            glfwGetFramebufferSize(window, &display_w, &display_h);
+//            glViewport(0, 0, display_w, display_h);
 
             glClearColor(0.30f, 0.13f, 0.17f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -312,6 +312,11 @@ int main()
                     // Because I use the texture from OpenGL, I need to invert the V from the UV.
                     ImGui::Image((ImTextureID)(intptr_t)screenBuffer->texture, wsize, ImVec2(0, 1), ImVec2(1, 0));
                     ImGui::EndChild();
+
+                    if(screenBuffer->NeedToResize(wsize.x, wsize.y)) {
+                        screenBuffer->Resize(wsize.x, wsize.y);
+                        glViewport(0, 0, wsize.x, wsize.y);
+                    }
                 }
                 ImGui::End();
             }

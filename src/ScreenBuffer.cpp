@@ -55,3 +55,14 @@ void ScreenBuffer::Delete() {
     glDeleteFramebuffers(1, &fbo);
     glDeleteTextures(1, &texture);
 }
+
+void ScreenBuffer::Resize(int w, int h) {
+    width = w;
+    height = h;
+    Delete();
+    Create();
+}
+
+bool ScreenBuffer::NeedToResize(int w, int h) {
+    return w != width || h != height;
+}
