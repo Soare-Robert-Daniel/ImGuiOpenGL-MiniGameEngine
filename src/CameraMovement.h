@@ -17,15 +17,18 @@ public:
     void SetSpeed(float speed);
     void SetMouseSensitivity(float sens);
 
-private:
-    static void InputCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-    static void MouseCallback(GLFWwindow* window, double xPos, double yPos);
     std::shared_ptr<Camera> camera;
     float speed;
     float mouseSensitivity;
 
     float lastXPos;
     float lastYPos;
+
+    bool lockMouse;
+
+private:
+    static void InputCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void MouseCallback(GLFWwindow* window, double xPos, double yPos);
 
     CameraMovement();
     CameraMovement(CameraMovement const&); // prevent copies

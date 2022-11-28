@@ -72,7 +72,8 @@ int main()
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
     glfwSwapBuffers(window);
 
@@ -218,6 +219,7 @@ int main()
         {
             ImGui::Begin("FPS");
             ImGui::Text("%.0f", glm::round(1.0 / deltaTime));
+            ImGui::Text("Cursor Lock: %s", CameraMovement::GetInstance().lockMouse ? "ON" : "OFF" );
             ImGui::End();
         }
 
