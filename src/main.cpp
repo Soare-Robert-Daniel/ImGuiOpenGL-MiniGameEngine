@@ -214,7 +214,10 @@ int main()
     std::shared_ptr<GameObject> sceneRoot(new GameObject());
 
     std::shared_ptr<GameObject> cube(new GameObject());
-    cube->AddComponent((std::shared_ptr<Component>)(new RenderComponent()));
+    std::shared_ptr<RenderComponent> render(new RenderComponent());
+    render->model = model3D;
+    cube->AddComponent((std::shared_ptr<Component>)(render));
+
     sceneRoot->AddChildren(cube);
 
     sceneRoot->Start();

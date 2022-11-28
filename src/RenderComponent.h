@@ -5,11 +5,15 @@
 #ifndef CGE_RENDERCOMPONENT_H
 #define CGE_RENDERCOMPONENT_H
 
-
+#include <map>
 #include "Component.h"
+#include "Model.h"
 
 class RenderComponent : public Component {
 public:
+
+    std::shared_ptr<Model> model;
+
     RenderComponent() = default;
 
     void Start() override;

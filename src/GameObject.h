@@ -14,12 +14,14 @@
 #include <ranges>
 #include <vector>
 #include "Component.h"
+#include "TransformComponent.h"
 
 class GameObject {
 
 public:
     unsigned int componentId{0};
     std::string name;
+    TransformComponent transform{};
     std::vector<std::shared_ptr<Component>> components{};
     std::vector<std::shared_ptr<GameObject>> children{};
 
