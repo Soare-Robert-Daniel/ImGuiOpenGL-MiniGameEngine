@@ -15,8 +15,20 @@ class Transform {
   glm::vec3 rotation{};
   glm::vec3 scale{};
 
+  glm::mat4 modelMatrix = glm::mat4(1.0f);
+  bool hasChanged;
+
+  void ComputeModelMatrix();
+  void ComputeModelMatrixWithParent(const glm::mat4& parent);
+
+  void SetPosition(const glm::vec3& newPosition);
+  void SetRotation(const glm::vec3& newRotation);
+  void SetScale(const glm::vec3& newScale);
+
+  glm::vec3 getGlobalScale() const;
+
   Transform();
-  glm::mat4 GetSceneView() const;
+  glm::mat4 GetSceneView();
   virtual ~Transform();
 };
 

@@ -14,7 +14,18 @@ Transform::~Transform() {
 
 }
 
-glm::mat4 Transform::GetSceneView() const {
+glm::mat4 Transform::GetSceneView() {
+  if (hasChanged) {
+	ComputeModelMatrix();
+	hasChanged = false;
+  }
+
+  return modelMatrix;
+}
+void Transform::ComputeModelMatrix() {
+  if (!hasChanged) {
+	return;
+  }
   auto view = glm::mat4(1.0f);
 
   view = glm::scale(view, scale);
@@ -25,5 +36,29 @@ glm::mat4 Transform::GetSceneView() const {
 
   view = glm::translate(view, position);
 
-  return view;
+  modelMatrix = view;
+}
+void Transform::ComputeModelMatrixWithParent(const glm::mat4 &parent) {
+  ComputeModelMatrix();
+  modelMatrix = parent*modelMatrix;
+}
+void Transform::SetPosition(const glm::vec3 &newPosition) {
+  position = newPosition;
+  hasChanged = true;
+}
+void Transform::SetRotation(const glm::vec3 &newRotation) {
+  rotation = newRotation;
+  hasChanged = true;
+}
+void Transform::SetScale(const glm::vec3 &newScale) {
+  scale = newScale;
+  hasChanged = true;
+}
+
+glm::vec3 Transform::getGlobalScale() const {
+  return {
+	  glm::length(modelMatrix[0]), // RIGHT
+	  glm::length(modelMatrix[1]), // UP
+	  glm::length(-modelMatrix[2]) // BACKWARD
+  };
 }

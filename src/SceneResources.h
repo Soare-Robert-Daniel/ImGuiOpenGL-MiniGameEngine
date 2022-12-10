@@ -7,10 +7,12 @@
 
 #include <memory>s
 #include "Camera.h"
+#include "Culling.h"
 
 struct SceneResources {
   glm::mat4 projection;
   std::shared_ptr<Camera> camera;
+  Frustum frustum;
 };
 
 #endif //CGE_SCENERESOURCES_H

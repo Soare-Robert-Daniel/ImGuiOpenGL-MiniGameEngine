@@ -36,6 +36,13 @@ void Camera::SetDistance(float distance) {
 
 void Camera::CalculateView() {
   view = m_lookAt(pos, pos + forward, up);
+//  frustum = createFrustumFromCamera(
+//	  this,
+//	  frustumData.aspect,
+//	  frustumData.fovY,
+//	  frustumData.zNear,
+//	  frustumData.zFar
+//	);
 }
 
 void Camera::MoveForward(float distance) {

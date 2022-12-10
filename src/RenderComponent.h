@@ -9,6 +9,7 @@
 #include "Component.h"
 #include "Model.h"
 #include "Camera.h"
+#include "Culling.h"
 
 class RenderComponent : public Component {
  public:

@@ -10,6 +10,14 @@ void RenderComponent::Start(GameObject *object) {
 }
 
 void RenderComponent::Update(GameObject *object, const SceneResources &resources) {
+
+  SphereVolume volume = { glm::vec3(0), 0.5f };
+
+  if( ! volume.isTransformOnFrustum(resources.frustum, object->transform) ) {
+
+	return;
+  }
+
   shader->Use();
   int loadedTexturesIndex = 0;
   for (auto &texture : textures) {
@@ -27,6 +35,8 @@ void RenderComponent::Update(GameObject *object, const SceneResources &resources
   shader->SetMatrix("projection", resources.projection);
 
   model->RenderMeshes();
+
+  object->wasRendered = true;
 }
 
 void RenderComponent::OnEnable() {

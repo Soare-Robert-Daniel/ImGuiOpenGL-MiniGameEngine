@@ -24,6 +24,7 @@
 #include "ScreenBuffer.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
+#include "Culling.h"
 
 const float movementSpeed = 2.0f;
 
@@ -198,6 +199,12 @@ int main() {
 
   glm::mat4 projection;
   projection = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
+  camera->frustumData = {
+	  .aspect = 800.0f/600.0f,
+	  .fovY = glm::radians(45.0f),
+	  .zNear = 0.1f,
+	  .zFar = 100.0f
+  };
 
   // Screen Frame Buffer
   std::unique_ptr<ScreenBuffer> screenBuffer(new ScreenBuffer());
@@ -220,13 +227,23 @@ int main() {
   cube->AddComponent((std::shared_ptr<Component>)(render));
 
   sceneRoot->AddChildren(cube);
-
   sceneRoot->Start();
 
   SceneResources sceneResources = {.projection = projection, .camera = camera};
 
+  int renderedObjects = 0;
   // +---------------- Main Loop ----------------+
   while (!glfwWindowShouldClose(window)) {
+
+	renderedObjects = 0;
+	sceneResources.frustum = createFrustumFromCamera(
+		camera,
+		camera->frustumData.aspect,
+		camera->frustumData.fovY,
+		camera->frustumData.zNear,
+		camera->frustumData.zFar
+		);
+
 	auto currentFrame = (float)glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
@@ -294,6 +311,7 @@ int main() {
 		//                Global::GetMesh("square")->Unbind();
 
 		sceneRoot->Update(sceneResources);
+		// std::cout << sceneRoot->CountRenderedObjects() << std::endl;
 
 //                {
 //                    glm::mat4 model = glm::mat4(1.0f);
@@ -319,6 +337,7 @@ int main() {
 		ImGui::Begin("FPS");
 		ImGui::Text("%.0f", glm::round(1.0/deltaTime));
 		ImGui::Text("Cursor Lock: %s", CameraMovement::GetInstance().lockMouse ? "ON" : "OFF");
+		ImGui::Text("%d", sceneRoot->CountRenderedObjects());
 		ImGui::End();
 	  }
 

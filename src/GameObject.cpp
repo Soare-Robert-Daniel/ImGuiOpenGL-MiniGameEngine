@@ -19,6 +19,8 @@ void GameObject::Start() {
 }
 
 void GameObject::Update(const SceneResources &resources) {
+  wasRendered = false;
+
   for (auto &c : components) {
 	if (c!=nullptr) {
 	  c->Update(this, resources);
@@ -114,6 +116,15 @@ void GameObject::RemoveDeadPointers() {
 					 }),
 	  children.end()
   );
+}
+int GameObject::CountRenderedObjects() {
+  int renderedObj = wasRendered ? 1 : 0;
+
+  for(auto& child : children) {
+	renderedObj += child->CountRenderedObjects();
+  }
+
+  return renderedObj;
 }
 
 

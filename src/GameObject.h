@@ -24,6 +24,7 @@ class GameObject {
   Transform transform{};
   std::vector<std::shared_ptr<Component>> components{};
   std::vector<std::shared_ptr<GameObject>> children{};
+  bool wasRendered;
 
   GameObject() = default;
 
@@ -49,6 +50,8 @@ class GameObject {
   virtual void Destroy();
 
   virtual void RemoveDeadPointers();
+
+  virtual int CountRenderedObjects();
 
 };
 

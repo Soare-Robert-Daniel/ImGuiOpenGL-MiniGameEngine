@@ -33,13 +33,20 @@ class Camera {
   glm::vec3 GetTargetPosition();
   glm::mat4 GetView();
 
- private:
   float dist = 1.0f; // distanta de la camera la caracter
   glm::vec3 pos; // pozitia
   glm::vec3 forward; // directia inainte
   glm::vec3 up; // deasupra camerei
   glm::vec3 right; // dreapta camerei
   glm::mat4 view; // matricea cu spatiul camerei
+
+  struct {
+	float aspect;
+	float fovY;
+	float zNear;
+	float zFar;
+  } frustumData;
+
 };
 
 #endif //CGE_CAMERA_H

@@ -84,5 +84,6 @@ target_sources(cge PRIVATE
     src/gl_utils.cpp
     src/ShaderLoader.cpp
     src/main.cpp
+    src/Culling.cpp
 )
 
