@@ -13,31 +13,30 @@
 #include "Shader.h"
 
 class Mesh {
-public:
-    explicit Mesh(std::string id) {
-        id = std::move(id);
-        VBO = -1;
-        VAO = -1;
-    }
+ public:
+  explicit Mesh(std::string id) {
+	id = std::move(id);
+	VBO = -1;
+	VAO = -1;
+  }
 
-    void AddIndices( std::vector<GLuint> indices);
-    void AddVertices(std::vector<CGE::Vertex> vertices);
-    void LoadToGPU();
-    void Render() const;
-    void Bind() const;
-    static void Unbind() ;
+  void AddIndices(std::vector<GLuint> indices);
+  void AddVertices(std::vector<CGE::Vertex> vertices);
+  void LoadToGPU();
+  void Render() const;
+  void Bind() const;
+  static void Unbind();
 
-    virtual ~Mesh();
+  virtual ~Mesh();
 
-    std::string id;
-    GLuint VAO;
-    GLuint VBO;
+  std::string id;
+  GLuint VAO;
+  GLuint VBO;
 
-private:
-    std::vector<CGE::Vertex> _vertices;
-    std::vector<GLuint> _indices;
+ private:
+  std::vector<CGE::Vertex> _vertices;
+  std::vector<GLuint> _indices;
 
 };
-
 
 #endif //CGE_MESH_H

@@ -8,26 +8,28 @@
 #include <map>
 #include "Component.h"
 #include "Model.h"
+#include "Camera.h"
 
 class RenderComponent : public Component {
-public:
+ public:
 
-    std::shared_ptr<Model> model;
+  std::shared_ptr<Model> model;
+  std::vector<std::shared_ptr<Texture>> textures;
+  std::shared_ptr<Shader> shader;
 
-    RenderComponent() = default;
+  RenderComponent() = default;
 
-    void Start() override;
+  void Start(GameObject *object) override;
 
-    void Update() override;
+  void Update(GameObject *object, const SceneResources &resources) override;
 
-    void OnEnable() override;
+  void OnEnable() override;
 
-    void OnDisable() override;
+  void OnDisable() override;
 
-    std::unique_ptr<Component> Clone() override;
+  std::unique_ptr<Component> Clone() override;
 
-    ~RenderComponent() override;
+  ~RenderComponent() override;
 };
-
 
 #endif //CGE_RENDERCOMPONENT_H

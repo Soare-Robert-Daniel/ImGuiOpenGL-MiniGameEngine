@@ -7,19 +7,19 @@
 Component::~Component() = default;
 
 bool Component::IsActive() const {
-    return active;
+  return active;
 }
 
 void Component::Activate() {
-    active = true;
-    OnEnable();
+  active = true;
+  OnEnable();
 }
 
 void Component::Deactivate() {
-    active = false;
-    OnDisable();
+  active = false;
+  OnDisable();
 }
 
 std::unique_ptr<Component> Component::Clone() {
-    return {};
+  return {};
 }

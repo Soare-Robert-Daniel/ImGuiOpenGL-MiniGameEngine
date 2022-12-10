@@ -10,28 +10,27 @@
 #include <iostream>
 
 class ScreenBuffer {
-public:
-    unsigned int fbo;
-    unsigned int texture;
-    unsigned int rbo;
+ public:
+  unsigned int fbo;
+  unsigned int texture;
+  unsigned int rbo;
 
-    int width;
-    int height;
+  int width;
+  int height;
 
-    void Create();
-    void CreateBuffer();
-    void CreateTexture();
-    void CreateRender();
-    void BindBuffer() const;
-    bool NeedToResize(int w, int h);
-    void Resize(int w, int h);
-    static void UnbindBuffer();
+  void Create();
+  void CreateBuffer();
+  void CreateTexture();
+  void CreateRender();
+  void BindBuffer() const;
+  bool NeedToResize(int w, int h);
+  void Resize(int w, int h);
+  static void UnbindBuffer();
 
-    void Delete();
+  void Delete();
 
-    ScreenBuffer();
-    virtual ~ScreenBuffer();
+  ScreenBuffer();
+  virtual ~ScreenBuffer();
 };
-
 
 #endif //CGE_SCREENBUFFER_H

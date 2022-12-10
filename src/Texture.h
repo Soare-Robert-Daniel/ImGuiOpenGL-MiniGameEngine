@@ -10,21 +10,19 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-
 class Texture {
-public:
-    Texture() = default;
-    void Load(std::string filename);
-    void Activate();
-    void Bind(unsigned int slot);
-    void ActivateAndBind(unsigned int slot);
+ public:
+  Texture() = default;
+  void Load(std::string filename);
+  void Activate();
+  void Bind(unsigned int slot);
+  void ActivateAndBind(unsigned int slot);
 
-    virtual ~Texture();
+  virtual ~Texture();
 
-private:
-    unsigned int texture;
-    int width, height, nrChannels;
+ private:
+  unsigned int texture;
+  int width, height, nrChannels;
 };
-
 
 #endif //CGE_TEXTURE_H

@@ -16,19 +16,18 @@
 #include <utility>
 
 class Model {
-public:
-    Model()= default;
-    void LoadFromFile(const std::string& filename);
-    void NodeImporterHandler(aiNode *node, const aiScene *scene);
-    static std::shared_ptr<Mesh> CreateMeshFromNode(aiMesh *mesh);
-    void RenderMeshes();
+ public:
+  Model() = default;
+  void LoadFromFile(const std::string &filename);
+  void NodeImporterHandler(aiNode *node, const aiScene *scene);
+  static std::shared_ptr<Mesh> CreateMeshFromNode(aiMesh *mesh);
+  void RenderMeshes();
 
-private:
-    std::string name;
-    std::vector<std::shared_ptr<Mesh>> meshes;
-    std::vector<std::shared_ptr<Texture>> textures;
+ private:
+  std::string name;
+  std::vector<std::shared_ptr<Mesh>> meshes;
+  std::vector<std::shared_ptr<Texture>> textures;
 
 };
-
 
 #endif //CGE_MODEL_H

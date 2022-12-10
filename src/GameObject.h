@@ -14,43 +14,42 @@
 #include <ranges>
 #include <vector>
 #include "Component.h"
-#include "TransformComponent.h"
+#include "Transform.h"
 
 class GameObject {
 
-public:
-    unsigned int componentId{0};
-    std::string name;
-    TransformComponent transform{};
-    std::vector<std::shared_ptr<Component>> components{};
-    std::vector<std::shared_ptr<GameObject>> children{};
+ public:
+  unsigned int componentId{0};
+  std::string name;
+  Transform transform{};
+  std::vector<std::shared_ptr<Component>> components{};
+  std::vector<std::shared_ptr<GameObject>> children{};
 
-    GameObject() = default;
+  GameObject() = default;
 
-    virtual void Start();
-    virtual void Update();
+  virtual void Start();
+  virtual void Update(const SceneResources &resources);
 
-    // Components
-    virtual void AddComponent(std::shared_ptr<Component> component);
-    virtual void AddComponents(std::vector<std::shared_ptr<Component>> otherComponents);
+  // Components
+  virtual void AddComponent(std::shared_ptr<Component> component);
+  virtual void AddComponents(std::vector<std::shared_ptr<Component>> otherComponents);
 
-    virtual std::vector<std::shared_ptr<Component>> GetComponents() const;
-    virtual std::optional<std::shared_ptr<Component>> GetComponentByName(const std::string& componentName);
+  virtual std::vector<std::shared_ptr<Component>> GetComponents() const;
+  virtual std::optional<std::shared_ptr<Component>> GetComponentByName(const std::string &componentName);
 
-    virtual std::optional<std::shared_ptr<Component>> GetComponent(CType componentType) const;
-    virtual std::vector<std::shared_ptr<Component>> GetComponents(CType componentType) const;
+  virtual std::optional<std::shared_ptr<Component>> GetComponent(CType componentType) const;
+  virtual std::vector<std::shared_ptr<Component>> GetComponents(CType componentType) const;
 
-    // Children
-    virtual void AddChildren(std::shared_ptr<GameObject> obj);
-    virtual std::vector<std::shared_ptr<GameObject>> GetChildren() const;
+  // Children
+  virtual void AddChildren(std::shared_ptr<GameObject> obj);
+  virtual std::vector<std::shared_ptr<GameObject>> GetChildren() const;
 
-    virtual std::optional<std::shared_ptr<GameObject>> FindChild(const std::string& objectName) const;
+  virtual std::optional<std::shared_ptr<GameObject>> FindChild(const std::string &objectName) const;
 
-    virtual void Destroy();
+  virtual void Destroy();
 
-    virtual void RemoveDeadPointers();
+  virtual void RemoveDeadPointers();
 
 };
-
 
 #endif //CGE_GAMEOBJECT_H
