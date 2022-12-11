@@ -40,6 +40,7 @@ std::shared_ptr<Mesh> Model::CreateMeshFromNode(aiMesh *mesh) {
   std::vector<CGE::Vertex> vertices;
   std::vector<unsigned int> indices;
 
+
   for (auto vertIdx = 0; vertIdx < mesh->mNumVertices; vertIdx++) {
 	CGE::Vertex vertex{.color = glm::vec4(0.0f)};
 

@@ -25,6 +25,7 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "Culling.h"
+#include "Lighting.h"
 
 const float movementSpeed = 2.0f;
 
@@ -229,7 +230,10 @@ int main() {
   sceneRoot->AddChildren(cube);
   sceneRoot->Start();
 
-  SceneResources sceneResources = {.projection = projection, .camera = camera};
+  // Lighting
+  LightingData lighting_data = {.position = camera->pos, .color = glm::vec3(1)};
+
+  SceneResources sceneResources = {.projection = projection, .camera = camera, .lighting_data = lighting_data};
 
   int renderedObjects = 0;
   // +---------------- Main Loop ----------------+

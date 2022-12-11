@@ -6,15 +6,12 @@
 #include "GameObject.h"
 
 void RenderComponent::Start(GameObject *object) {
-
+	culling_bounding_volume = std::make_unique<SphereVolume>( SphereVolume{ glm::vec3(0), 0.5f });
 }
 
 void RenderComponent::Update(GameObject *object, const SceneResources &resources) {
 
-  SphereVolume volume = { glm::vec3(0), 0.5f };
-
-  if( ! volume.isTransformOnFrustum(resources.frustum, object->transform) ) {
-
+  if( ! culling_bounding_volume->isTransformOnFrustum(resources.frustum, object->transform) ) {
 	return;
   }
 
@@ -33,6 +30,9 @@ void RenderComponent::Update(GameObject *object, const SceneResources &resources
   shader->SetMatrix("model", object->transform.GetSceneView());
   shader->SetMatrix("view", resources.camera->GetView());
   shader->SetMatrix("projection", resources.projection);
+
+  shader->SetVector3("lightPos", resources.lighting_data.position);
+  shader->SetVector3("lightColor", resources.lighting_data.color);
 
   model->RenderMeshes();
 

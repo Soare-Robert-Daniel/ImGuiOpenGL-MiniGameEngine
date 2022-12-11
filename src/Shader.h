@@ -34,6 +34,7 @@ class Shader {
   void SetBool(const std::string &name, bool value) const;
   void SetFloat(const std::string &name, float value) const;
   void SetInt(const std::string &name, int value) const;
+  void SetVector3(const std::string &name, glm::vec3 vector) const;
   void SetMatrix(const std::string &name, glm::mat4 matrix) const;
 
   void AddFile(ShaderLoader::ShaderType type, const std::string &filepath);

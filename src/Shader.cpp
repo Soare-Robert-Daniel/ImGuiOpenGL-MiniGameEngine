@@ -54,3 +54,7 @@ void Shader::SetBool(const std::string &name, bool value) const {
 void Shader::SetMatrix(const std::string &name, glm::mat4 matrix) const {
   glUniformMatrix4fv(glGetUniformLocation(programId, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 }
+
+void Shader::SetVector3(const std::string &name, glm::vec3 vector) const {
+	glUniform3fv(glGetUniformLocation(programId, name.c_str()), 1, glm::value_ptr(vector));
+}
