@@ -69,6 +69,7 @@ struct SphereVolume : CullingBoundingVolume {
 	return plan.getSignedDistanceToPlan(center) > -radius;
   }
 
+  // FIX: Rotation
   bool isTransformOnFrustum(const Frustum& frustum, const Transform& transform) const final
   {
 	// Preia dimensiunea obiectului

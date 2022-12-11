@@ -231,7 +231,7 @@ int main() {
   sceneRoot->Start();
 
   // Lighting
-  LightingData lighting_data = {.position = camera->pos, .color = glm::vec3(1)};
+  LightingData lighting_data = {.position = camera->pos, .color = glm::vec3(0.3f, 0.5f, 0.0f)};
 
   SceneResources sceneResources = {.projection = projection, .camera = camera, .lighting_data = lighting_data};
 

@@ -33,6 +33,7 @@ void RenderComponent::Update(GameObject *object, const SceneResources &resources
 
   shader->SetVector3("lightPos", resources.lighting_data.position);
   shader->SetVector3("lightColor", resources.lighting_data.color);
+  shader->SetVector3("viewPos", resources.camera->pos);
 
   model->RenderMeshes();
 
