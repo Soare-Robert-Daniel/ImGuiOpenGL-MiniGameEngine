@@ -338,10 +338,10 @@ int main() {
 	  ImGui::NewFrame();
 
 	  {
-		ImGui::Begin("FPS");
-		ImGui::Text("%.0f", glm::round(1.0/deltaTime));
+		ImGui::Begin("Scene");
+		ImGui::Text("FPS: %.0f", glm::round(1.0/deltaTime));
 		ImGui::Text("Cursor Lock: %s", CameraMovement::GetInstance().lockMouse ? "ON" : "OFF");
-		ImGui::Text("%d", sceneRoot->CountRenderedObjects());
+		ImGui::Text("Rendered Objs: %d", sceneRoot->CountRenderedObjects());
 		ImGui::End();
 	  }
 

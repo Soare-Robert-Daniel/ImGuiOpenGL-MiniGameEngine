@@ -12,6 +12,7 @@
 
 enum class CType {
   Transform,
+  Render,
   Unknown
 };
 
