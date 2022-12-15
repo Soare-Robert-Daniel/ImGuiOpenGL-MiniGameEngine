@@ -24,11 +24,11 @@ class Transform {
   glm::mat4 GetLocalModelMatrix() const;
   void ComputeModelMatrix();
 
-  void SetPosition(const glm::vec3& new_position);
-  void SetRotation(const glm::vec3& new_rotation);
-  void SetScale(const glm::vec3& new_scale);
+  void SetPosition(const glm::vec3 &new_position);
+  void SetRotation(const glm::vec3 &new_rotation);
+  void SetScale(const glm::vec3 &new_scale);
 
-  glm::vec3 GetGlobalLocation(const GameObject* game_object) const;
+  glm::vec3 GetGlobalLocation(const GameObject *game_object) const;
 
   glm::vec3 getGlobalScale() const;
 

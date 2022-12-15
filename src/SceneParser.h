@@ -110,9 +110,9 @@ class SceneParser {
 
 	  if (raw_c.contains("texturesRef")) {
 		render->textures = {};
-		for(auto& texture : raw_c.at("texturesRef")) {
+		for (auto &texture : raw_c.at("texturesRef")) {
 		  auto name = texture.get<std::string>();
-		  if( Global::HasTexture(name) ) {
+		  if (Global::HasTexture(name)) {
 			render->textures.push_back(Global::GetTexture(name));
 		  }
 		}

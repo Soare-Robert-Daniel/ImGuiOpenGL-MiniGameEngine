@@ -123,7 +123,7 @@ void GameObject::RemoveDeadPointers() {
 int GameObject::CountRenderedObjects() {
   int renderedObj = wasRendered ? 1 : 0;
 
-  for(auto& child : children) {
+  for (auto &child : children) {
 	renderedObj += child->CountRenderedObjects();
   }
 
