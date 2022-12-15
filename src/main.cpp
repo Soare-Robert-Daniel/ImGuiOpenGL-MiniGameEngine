@@ -26,6 +26,7 @@
 #include "RenderComponent.h"
 #include "Culling.h"
 #include "Lighting.h"
+#include "ContinuousRotationComponent.h"
 
 const float movementSpeed = 2.0f;
 
@@ -219,12 +220,16 @@ int main() {
 
   std::shared_ptr<GameObject> cube(new GameObject());
   cube->transform = Transform();
-  std::shared_ptr<RenderComponent> render(new RenderComponent());
 
+  std::shared_ptr<RenderComponent> render(new RenderComponent());
   render->model = model3D;
   render->textures = std::vector{Global::GetTexture("simple")};
   render->shader = Global::GetShader("simple");
 
+  std::shared_ptr<ContinuousRotationComponent> rotation(new ContinuousRotationComponent());
+  rotation->rotation = glm::vec3(30, 0, 30);
+
+  cube->AddComponent((std::shared_ptr<Component>)(rotation));
   cube->AddComponent((std::shared_ptr<Component>)(render));
 
   sceneRoot->AddChildren(cube);
@@ -240,20 +245,24 @@ int main() {
   while (!glfwWindowShouldClose(window)) {
 
 	renderedObjects = 0;
+
+
+	auto currentFrame = (float)glfwGetTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	sceneResources.deltaTime = deltaTime;
+
+	cameraMovement.SetSpeed(deltaTime*10.0f);
+	cameraMovement.ProcessInputPerFrame(window);
+
 	sceneResources.frustum = createFrustumFromCamera(
 		camera,
 		camera->frustumData.aspect,
 		camera->frustumData.fovY,
 		camera->frustumData.zNear,
 		camera->frustumData.zFar
-		);
+	);
 
-	auto currentFrame = (float)glfwGetTime();
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-
-	cameraMovement.SetSpeed(deltaTime*10.0f);
-	cameraMovement.ProcessInputPerFrame(window);
 	// HandleInput(window, deltaTime, camera);
 
 	screenBuffer->BindBuffer();

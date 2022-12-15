@@ -76,6 +76,7 @@ target_sources(cge PRIVATE
     src/GameObject.cpp
     src/Component.cpp
     src/Texture.cpp
+        src/ContinuousRotationComponent.cpp
     src/emath.cpp
     src/Shader.cpp
     src/ScreenBuffer.cpp
