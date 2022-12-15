@@ -27,6 +27,7 @@
 #include "Culling.h"
 #include "Lighting.h"
 #include "ContinuousRotationComponent.h"
+#include <nlohmann/json.hpp>
 
 const float movementSpeed = 2.0f;
 

@@ -23,6 +23,7 @@ target_include_directories(cge PRIVATE
     /usr/local/Cellar/glew/2.2.0_1/include
     /Users/robert/.xmake/packages/s/stb/2021.09.10/6c0c2519d0ea47cfa24a36df5c1c169a/include
     /Users/robert/.xmake/packages/a/assimp/v5.2.5/1d1c22d630054cd08a2c4b6a4f2b516d/include
+    /Users/robert/.xmake/packages/n/nlohmann_json/v3.11.2/55637776d78843dd9a21fdf7580682b0/include
 )
 target_compile_definitions(cge PRIVATE
     GL_SILENCE_DEPRECATION
@@ -76,13 +77,13 @@ target_sources(cge PRIVATE
     src/GameObject.cpp
     src/Component.cpp
     src/Texture.cpp
-        src/ContinuousRotationComponent.cpp
     src/emath.cpp
     src/Shader.cpp
     src/ScreenBuffer.cpp
     src/Transform.cpp
     src/Model.cpp
     src/gl_utils.cpp
+    src/ContinuousRotationComponent.cpp
     src/ShaderLoader.cpp
     src/main.cpp
     src/Culling.cpp

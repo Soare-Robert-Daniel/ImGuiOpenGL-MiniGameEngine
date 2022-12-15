@@ -24,13 +24,14 @@ add_requires("glew")
 -- Helpers libs
 add_requires("stb")
 add_requires("assimp")
+add_requires("nlohmann_json")
 
 -- Executable
 target("cge")
     set_kind("binary")
     -- add_headerfiles("src/*.h")
     add_files("src/*.cpp")
-    add_packages("opengl", "glfw", "imgui", "glm", "glad", "glew", "stb", "assimp")
+    add_packages("opengl", "glfw", "imgui", "glm", "glad", "glew", "stb", "assimp", "nlohmann_json")
 
 
 --
