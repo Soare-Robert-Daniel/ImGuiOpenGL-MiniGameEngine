@@ -15,7 +15,7 @@ struct SceneResources {
   std::shared_ptr<Camera> camera;
   Frustum frustum;
   LightingData lighting_data;
-  float deltaTime;
+  float delta_time;
 };
 
 #endif //CGE_SCENERESOURCES_H

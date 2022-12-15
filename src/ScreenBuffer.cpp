@@ -69,6 +69,6 @@ void ScreenBuffer::Resize(int w, int h) {
   Create();
 }
 
-bool ScreenBuffer::NeedToResize(int w, int h) {
+bool ScreenBuffer::NeedToResize(int w, int h) const {
   return w!=width || h!=height;
 }

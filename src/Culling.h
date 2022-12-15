@@ -44,6 +44,7 @@ Frustum createFrustumFromCamera(const std::shared_ptr<Camera> camera, float aspe
 struct CullingBoundingVolume {
   virtual bool isTransformOnFrustum(const Frustum& frustum, const Transform& transform) const = 0;
   virtual bool isOnOrForwardPlan(const Plan& plan) const = 0;
+  virtual void setPosition(const glm::vec3& pos) = 0;
 
   bool isOnFrustum(const Frustum& frustum) const
   {
@@ -73,25 +74,29 @@ struct SphereVolume : CullingBoundingVolume {
   bool isTransformOnFrustum(const Frustum& frustum, const Transform& transform) const final
   {
 	// Preia dimensiunea obiectului
-	const glm::vec3 globalScale = transform.getGlobalScale();
+	const glm::vec3 global_scale = transform.getGlobalScale();
 
 	// Calculeaza centrul modelului
-	const glm::vec3 globalCenter{ transform.modelMatrix * glm::vec4(center, 1.f) };
+	const glm::vec3 global_center{transform.model_matrix * glm::vec4(center, 1.f) };
 
 	// Gaseste dimensiunea sferei care incadreaza obiectul
-	const float maxScale = std::fmax(std::fmax(globalScale.x, globalScale.y), globalScale.z);
+	const float maxScale = std::fmax(std::fmax(global_scale.x, global_scale.y), global_scale.z);
 
 	// Creaza sfera
-	SphereVolume globalSphere(globalCenter, radius * (maxScale * 0.5f));
+	SphereVolume global_sphere(global_center, radius * (maxScale * 0.5f));
 
 	// Verfica daca sfera se afla in frustum
-	return (globalSphere.isOnOrForwardPlan(frustum.leftFace) &&
-		globalSphere.isOnOrForwardPlan(frustum.rightFace) &&
-		globalSphere.isOnOrForwardPlan(frustum.farFace) &&
-		globalSphere.isOnOrForwardPlan(frustum.nearFace) &&
-		globalSphere.isOnOrForwardPlan(frustum.topFace) &&
-		globalSphere.isOnOrForwardPlan(frustum.bottomFace));
+	return (global_sphere.isOnOrForwardPlan(frustum.leftFace) &&
+		global_sphere.isOnOrForwardPlan(frustum.rightFace) &&
+		global_sphere.isOnOrForwardPlan(frustum.farFace) &&
+		global_sphere.isOnOrForwardPlan(frustum.nearFace) &&
+		global_sphere.isOnOrForwardPlan(frustum.topFace) &&
+		global_sphere.isOnOrForwardPlan(frustum.bottomFace));
   };
+
+  void setPosition(const glm::vec3 &pos) override {
+	center = pos;
+  }
 };
 
 bool IsTransformOnFrustumWithSphereVolume(const Frustum& frustum, const Transform& transform);

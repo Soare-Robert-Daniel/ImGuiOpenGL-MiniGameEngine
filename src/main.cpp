@@ -103,7 +103,7 @@ int main() {
 
   // +---------------- SHADER LOADING ----------------+
   std::shared_ptr<Shader> shader(new Shader());
-  shader->data = {.textureNum = 1};
+  shader->data = {.texture_num = 1};
   shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
   shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
   shader->LoadFiles();
@@ -260,7 +260,7 @@ int main() {
 	auto currentFrame = (float)glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
-	sceneResources.deltaTime = deltaTime;
+	sceneResources.delta_time = deltaTime;
 
 	cameraMovement.SetSpeed(deltaTime*10.0f);
 	cameraMovement.ProcessInputPerFrame(window);
@@ -273,7 +273,7 @@ int main() {
 		camera->frustumData.zFar
 	);
 
-	// HandleInput(window, deltaTime, camera);
+	// HandleInput(window, delta_time, camera);
 
 	screenBuffer->BindBuffer();
 

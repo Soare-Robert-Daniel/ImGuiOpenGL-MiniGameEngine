@@ -10,13 +10,13 @@ void ContinuousRotationComponent::Start(GameObject *object) {
 }
 void ContinuousRotationComponent::Update(GameObject *object, const SceneResources &resources) {
 
-  object->transform.rotation += resources.deltaTime*5.0f*glm::vec3(
+  object->transform.rotation += resources.delta_time*5.0f*glm::vec3(
 	  glm::radians(rotation.x),
 	  glm::radians(rotation.y),
 	  glm::radians(rotation.z)
   );
   object->transform.SetRotation(
-	  object->transform.rotation + resources.deltaTime*
+	  object->transform.rotation + resources.delta_time*
 		  glm::vec3(
 			  glm::radians(rotation.x),
 			  glm::radians(rotation.y),

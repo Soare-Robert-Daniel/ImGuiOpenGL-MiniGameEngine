@@ -6,7 +6,7 @@
 #define CGE_SHADERDATA_H
 
 struct ShaderData {
-  int textureNum;
+  int texture_num;
 };
 
 #endif //CGE_SHADERDATA_H
