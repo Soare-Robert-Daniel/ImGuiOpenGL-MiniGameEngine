@@ -70,6 +70,7 @@ target_link_options(cge PRIVATE
     -m64
 )
 target_sources(cge PRIVATE
+    src/SceneParser.cpp
     src/Mesh.cpp
     src/CameraMovement.cpp
     src/Camera.cpp

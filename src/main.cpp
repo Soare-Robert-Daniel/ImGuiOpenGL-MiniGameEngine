@@ -27,7 +27,7 @@
 #include "Culling.h"
 #include "Lighting.h"
 #include "ContinuousRotationComponent.h"
-#include <nlohmann/json.hpp>
+#include "SceneParser.h"
 
 const float movementSpeed = 2.0f;
 
@@ -185,6 +185,7 @@ int main() {
   // +---------------- IMPORT MODEL ----------------+
   std::shared_ptr<Model> model3D(new Model());
   model3D->LoadFromFile("test_model.obj");
+  Global::AddModel("simple", model3D);
 
   // +---------------- CAMERA SETUP ----------------+
   std::shared_ptr<Camera> camera(new Camera(glm::vec3(-10.0f, 0.0f, 0.0f)));
@@ -219,27 +220,35 @@ int main() {
 
   std::shared_ptr<GameObject> sceneRoot(new GameObject());
 
-  std::shared_ptr<GameObject> cube(new GameObject());
-  cube->transform = Transform();
 
-  std::shared_ptr<RenderComponent> render(new RenderComponent());
-  render->model = model3D;
-  render->textures = std::vector{Global::GetTexture("simple")};
-  render->shader = Global::GetShader("simple");
-
-  std::shared_ptr<ContinuousRotationComponent> rotation(new ContinuousRotationComponent());
-  rotation->rotation = glm::vec3(30, 0, 30);
-
-  cube->AddComponent((std::shared_ptr<Component>)(rotation));
-  cube->AddComponent((std::shared_ptr<Component>)(render));
-
-  sceneRoot->AddChildren(cube);
-  sceneRoot->Start();
 
   // Lighting
   LightingData lighting_data = {.position = camera->pos, .color = glm::vec3(0.3f, 0.5f, 0.0f)};
 
   SceneResources sceneResources = {.projection = projection, .camera = camera, .lighting_data = lighting_data};
+
+  SceneParser::parseConfigFile("scene.json", sceneResources, sceneRoot);
+
+  std::cout << sceneRoot->children.size() << std::endl;
+
+//  std::shared_ptr<GameObject> cube(new GameObject());
+//  cube->transform = Transform();
+//
+//  std::shared_ptr<RenderComponent> render(new RenderComponent());
+//  render->model = model3D;
+//  render->textures = std::vector{Global::GetTexture("simple")};
+//  render->shader = Global::GetShader("simple");
+//
+//  std::shared_ptr<ContinuousRotationComponent> rotation(new ContinuousRotationComponent());
+//  rotation->rotation = glm::vec3(30, 0, 30);
+//
+//  cube->AddComponent((std::shared_ptr<Component>)(rotation));
+//  cube->AddComponent((std::shared_ptr<Component>)(render));
+//
+//  sceneRoot->AddChildren(cube);
+  sceneRoot->Start();
+
+  std::cout << sceneRoot->children.size() << std::endl;
 
   int renderedObjects = 0;
   // +---------------- Main Loop ----------------+

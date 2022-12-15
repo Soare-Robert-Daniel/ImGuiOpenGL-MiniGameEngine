@@ -39,7 +39,8 @@ Copy assets to build folder.
 cp shaders/* assets/* build/windows/x64/release/Debug/ && cp shaders/* assets/* build/windows/x64/release/
 
 # MacOS
-cp shaders/* assets/* build/macosx/x86_64/release/Debug/ && cp shaders/* assets/* build/macosx/x86_64/release/
+cp shaders/* assets/* build/macosx/x86_64/release/Debug/
+cp shaders/* assets/* build/macosx/x86_64/release/
 ```
 
 

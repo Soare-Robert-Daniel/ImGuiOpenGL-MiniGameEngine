@@ -23,7 +23,6 @@ void ContinuousRotationComponent::Update(GameObject *object, const SceneResource
 			  glm::radians(rotation.z)
 		  )
   );
-  std::cout << object->transform.rotation.x << std::endl;
 }
 void ContinuousRotationComponent::OnEnable() {
 
