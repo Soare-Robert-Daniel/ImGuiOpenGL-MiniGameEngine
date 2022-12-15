@@ -6,12 +6,12 @@
 #include "GameObject.h"
 
 void RenderComponent::Start(GameObject *object) {
-  culling_bounding_volume = std::make_unique<SphereVolume>(SphereVolume{object->transform.position, 0.5f});
+  culling_bounding_volume = std::make_unique<SphereVolume>(SphereVolume{object->transform.position, 1.0f});
 }
 
 void RenderComponent::Update(GameObject *object, const SceneResources &resources) {
-  culling_bounding_volume->setPosition(object->transform.position);
-  if (!culling_bounding_volume->isTransformOnFrustum(resources.frustum, object->transform)) {
+  culling_bounding_volume->SetPosition(object->transform.GetGlobalLocation(object));
+  if (!culling_bounding_volume->IsTransformOnFrustum(resources.frustum, object->transform)) {
 	return;
   }
 

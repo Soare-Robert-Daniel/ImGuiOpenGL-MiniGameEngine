@@ -41,8 +41,8 @@ class Shader {
   void LoadFiles();
   void Refresh();
 
-  int getId() const;
-  void setId(int id);
+  int GetId() const;
+  void SetId(int id);
 
   virtual ~Shader();
 };

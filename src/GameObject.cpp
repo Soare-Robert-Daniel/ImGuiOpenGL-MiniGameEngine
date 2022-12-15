@@ -27,6 +27,8 @@ void GameObject::Update(const SceneResources &resources) {
 	}
   }
 
+  UpdateChildrenModelView();
+
   for (auto &g : children) {
 	if (g!=nullptr) {
 	  g->Update(resources);
@@ -117,6 +119,7 @@ void GameObject::RemoveDeadPointers() {
 	  children.end()
   );
 }
+
 int GameObject::CountRenderedObjects() {
   int renderedObj = wasRendered ? 1 : 0;
 
@@ -125,6 +128,14 @@ int GameObject::CountRenderedObjects() {
   }
 
   return renderedObj;
+}
+
+void GameObject::UpdateChildrenModelView() {
+  for (auto &g : children) {
+	if (g!=nullptr) {
+	  g->transform.parent_matrix = transform.GetSceneView();
+	}
+  }
 }
 
 

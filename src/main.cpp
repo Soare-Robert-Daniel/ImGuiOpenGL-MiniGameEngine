@@ -198,8 +198,8 @@ int main() {
   cameraMovement.RegisterKeyboardInputCallbackTo(window);
   CameraMovement::RegisterMouseInputCallbackTo(window);
 
-  float deltaTime = 0.0f; // Time between current frame and last frame
-  float lastFrame = 0.0f; // Time of last frame
+  float delta_time = 0.0f; // Time between current frame and last frame
+  float last_frame = 0.0f; // Time of last frame
 
   glm::mat4 projection;
   projection = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
@@ -211,61 +211,38 @@ int main() {
   };
 
   // Screen Frame Buffer
-  std::unique_ptr<ScreenBuffer> screenBuffer(new ScreenBuffer());
-  screenBuffer->width = 800;
-  screenBuffer->height = 800;
-  screenBuffer->Create();
+  std::unique_ptr<ScreenBuffer> screen_buffer(new ScreenBuffer());
+  screen_buffer->width = 800;
+  screen_buffer->height = 800;
+  screen_buffer->Create();
 
   // Scene Root
 
   std::shared_ptr<GameObject> sceneRoot(new GameObject());
 
-
-
   // Lighting
   LightingData lighting_data = {.position = camera->pos, .color = glm::vec3(0.3f, 0.5f, 0.0f)};
 
-  SceneResources sceneResources = {.projection = projection, .camera = camera, .lighting_data = lighting_data};
+  SceneResources scene_resources = {.projection = projection, .camera = camera, .lighting_data = lighting_data};
 
-  SceneParser::parseConfigFile("scene.json", sceneResources, sceneRoot);
+  SceneParser::ParseConfigFile("scene.json", scene_resources, sceneRoot);
 
-  std::cout << sceneRoot->children.size() << std::endl;
-
-//  std::shared_ptr<GameObject> cube(new GameObject());
-//  cube->transform = Transform();
-//
-//  std::shared_ptr<RenderComponent> render(new RenderComponent());
-//  render->model = model3D;
-//  render->textures = std::vector{Global::GetTexture("simple")};
-//  render->shader = Global::GetShader("simple");
-//
-//  std::shared_ptr<ContinuousRotationComponent> rotation(new ContinuousRotationComponent());
-//  rotation->rotation = glm::vec3(30, 0, 30);
-//
-//  cube->AddComponent((std::shared_ptr<Component>)(rotation));
-//  cube->AddComponent((std::shared_ptr<Component>)(render));
-//
-//  sceneRoot->AddChildren(cube);
   sceneRoot->Start();
-
-  std::cout << sceneRoot->children.size() << std::endl;
 
   int renderedObjects = 0;
   // +---------------- Main Loop ----------------+
   while (!glfwWindowShouldClose(window)) {
 
 	renderedObjects = 0;
-
-
 	auto currentFrame = (float)glfwGetTime();
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-	sceneResources.delta_time = deltaTime;
+	delta_time = currentFrame - last_frame;
+	last_frame = currentFrame;
+	scene_resources.delta_time = delta_time;
 
-	cameraMovement.SetSpeed(deltaTime*10.0f);
+	cameraMovement.SetSpeed(delta_time*10.0f);
 	cameraMovement.ProcessInputPerFrame(window);
 
-	sceneResources.frustum = createFrustumFromCamera(
+	scene_resources.frustum = createFrustumFromCamera(
 		camera,
 		camera->frustumData.aspect,
 		camera->frustumData.fovY,
@@ -275,80 +252,24 @@ int main() {
 
 	// HandleInput(window, delta_time, camera);
 
-	screenBuffer->BindBuffer();
+	screen_buffer->BindBuffer();
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 
 	{
-	  // Resize
-//            int display_w, display_h;
-//            glfwGetFramebufferSize(window, &display_w, &display_h);
-//            glViewport(0, 0, display_w, display_h);
 
 	  glClearColor(0.30f, 0.13f, 0.17f, 1.0f);
 	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	  {
-
-//                Global::GetShader("simple")->Use();
-//                Global::GetTexture("simple")->ActivateAndBind(0);
-//
-//                Global::GetShader("simple")->SetInt("texture0", 0);
-//
-//                // Global::GetShader("simple")->SetMatrix("model", model);
-//                {
-//                    Global::GetShader("simple")->SetMatrix("view", camera->GetView());
-//                    Global::GetShader("simple")->SetMatrix("projection", projection);
-//                }
-
-		//                Global::GetMesh("square")->Bind();
-		//
-		//                glm::vec3 cubePositions[] = {
-		//                        glm::vec3( 0.0f,  0.0f,  0.0f),
-		//                        glm::vec3( 2.0f,  5.0f, -15.0f),
-		//                        glm::vec3(-1.5f, -2.2f, -2.5f),
-		//                        glm::vec3(-3.8f, -2.0f, -12.3f),
-		//                        glm::vec3( 2.4f, -0.4f, -3.5f),
-		//                        glm::vec3(-1.7f,  3.0f, -7.5f),
-		//                        glm::vec3( 1.3f, -2.0f, -2.5f),
-		//                        glm::vec3( 1.5f,  2.0f, -2.5f),
-		//                        glm::vec3( 1.5f,  0.2f, -1.5f),
-		//                        glm::vec3(-1.3f,  1.0f, -1.5f)
-		//                };
-		//                for(unsigned int i = 0; i < 10; i++)
-		//                {
-		//                    // calculate the model matrix for each object and pass it to shader before drawing
-		//                    glm::mat4 model = glm::mat4(1.0f);
-		//                    model = glm::translate(model, cubePositions[i]);
-		//                    float angle = 20.0f * (float)i;
-		//                    if(i % 3 == 0)  // every 3rd iteration (including the first) we set the angle using GLFW's time function.
-		//                        angle = (float)glfwGetTime() * 25.0f;
-		//                    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-		//                    Global::GetShader("simple")->SetMatrix("model", model);
-		//
-		//
-		//                    glDrawArrays(GL_TRIANGLES, 0, 36);
-		//                }
-		//
-		//                Global::GetMesh("square")->Unbind();
-
-		sceneRoot->Update(sceneResources);
-		// std::cout << sceneRoot->CountRenderedObjects() << std::endl;
-
-//                {
-//                    glm::mat4 model = glm::mat4(1.0f);
-//                    auto angle = (float)glfwGetTime() * 25.0f;
-//                    model = emath::m_rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-//                    Global::GetShader("simple")->SetMatrix("model", model);
-//                    model3D->RenderMeshes();
-//                }
+		sceneRoot->Update(scene_resources);
 	  }
 
 	  glUseProgram(0);
 
 	  check_gl_error();
-	  screenBuffer->UnbindBuffer();
+	  screen_buffer->UnbindBuffer();
 	  glClearColor(0.0f, 0.13f, 0.0f, 1.0f);
 	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
@@ -358,7 +279,7 @@ int main() {
 
 	  {
 		ImGui::Begin("Scene");
-		ImGui::Text("FPS: %.0f", glm::round(1.0/deltaTime));
+		ImGui::Text("FPS: %.0f", glm::round(1.0/delta_time));
 		ImGui::Text("Cursor Lock: %s", CameraMovement::GetInstance().lockMouse ? "ON" : "OFF");
 		ImGui::Text("Rendered Objs: %d", sceneRoot->CountRenderedObjects());
 		ImGui::End();
@@ -371,11 +292,11 @@ int main() {
 		  // Get the size of the child (i.e. the whole draw size of the windows).
 		  ImVec2 wsize = ImGui::GetWindowSize();
 		  // Because I use the texture from OpenGL, I need to invert the V from the UV.
-		  ImGui::Image((ImTextureID)(intptr_t)screenBuffer->texture, wsize, ImVec2(0, 1), ImVec2(1, 0));
+		  ImGui::Image((ImTextureID)(intptr_t)screen_buffer->texture, wsize, ImVec2(0, 1), ImVec2(1, 0));
 		  ImGui::EndChild();
 
-		  if (screenBuffer->NeedToResize(wsize.x, wsize.y)) {
-			screenBuffer->Resize(wsize.x, wsize.y);
+		  if (screen_buffer->NeedToResize(wsize.x, wsize.y)) {
+			screen_buffer->Resize(wsize.x, wsize.y);
 			glViewport(0, 0, wsize.x, wsize.y);
 		  }
 		}

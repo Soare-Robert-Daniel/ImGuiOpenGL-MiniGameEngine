@@ -39,21 +39,21 @@ struct Frustum {
   Plan nearFace;
 };
 
-Frustum createFrustumFromCamera(const std::shared_ptr<Camera> camera, float aspect, float fovY, float zNear, float zFar);
+Frustum createFrustumFromCamera(std::shared_ptr<Camera> camera, float aspect, float fovY, float zNear, float zFar);
 
 struct CullingBoundingVolume {
-  virtual bool isTransformOnFrustum(const Frustum& frustum, const Transform& transform) const = 0;
-  virtual bool isOnOrForwardPlan(const Plan& plan) const = 0;
-  virtual void setPosition(const glm::vec3& pos) = 0;
+  virtual bool IsTransformOnFrustum(const Frustum& frustum, const Transform& transform) const = 0;
+  virtual bool IsOnOrForwardPlan(const Plan& plan) const = 0;
+  virtual void SetPosition(const glm::vec3& pos) = 0;
 
   bool isOnFrustum(const Frustum& frustum) const
   {
-	return (isOnOrForwardPlan(frustum.leftFace) &&
-		isOnOrForwardPlan(frustum.rightFace) &&
-		isOnOrForwardPlan(frustum.topFace) &&
-		isOnOrForwardPlan(frustum.bottomFace) &&
-		isOnOrForwardPlan(frustum.nearFace) &&
-		isOnOrForwardPlan(frustum.farFace));
+	return (IsOnOrForwardPlan(frustum.leftFace) &&
+		IsOnOrForwardPlan(frustum.rightFace) &&
+		IsOnOrForwardPlan(frustum.topFace) &&
+		IsOnOrForwardPlan(frustum.bottomFace) &&
+		IsOnOrForwardPlan(frustum.nearFace) &&
+		IsOnOrForwardPlan(frustum.farFace));
   };
 };
 
@@ -65,13 +65,13 @@ struct SphereVolume : CullingBoundingVolume {
 	  : CullingBoundingVolume{}, center{ inCenter }, radius{ inRadius }
   {}
 
-  bool isOnOrForwardPlan(const Plan& plan) const final
+  bool IsOnOrForwardPlan(const Plan& plan) const final
   {
 	return plan.getSignedDistanceToPlan(center) > -radius;
   }
 
   // FIX: Rotation
-  bool isTransformOnFrustum(const Frustum& frustum, const Transform& transform) const final
+  bool IsTransformOnFrustum(const Frustum& frustum, const Transform& transform) const final
   {
 	// Preia dimensiunea obiectului
 	const glm::vec3 global_scale = transform.getGlobalScale();
@@ -86,15 +86,15 @@ struct SphereVolume : CullingBoundingVolume {
 	SphereVolume global_sphere(global_center, radius * (maxScale * 0.5f));
 
 	// Verfica daca sfera se afla in frustum
-	return (global_sphere.isOnOrForwardPlan(frustum.leftFace) &&
-		global_sphere.isOnOrForwardPlan(frustum.rightFace) &&
-		global_sphere.isOnOrForwardPlan(frustum.farFace) &&
-		global_sphere.isOnOrForwardPlan(frustum.nearFace) &&
-		global_sphere.isOnOrForwardPlan(frustum.topFace) &&
-		global_sphere.isOnOrForwardPlan(frustum.bottomFace));
+	return (global_sphere.IsOnOrForwardPlan(frustum.leftFace) &&
+		global_sphere.IsOnOrForwardPlan(frustum.rightFace) &&
+		global_sphere.IsOnOrForwardPlan(frustum.farFace) &&
+		global_sphere.IsOnOrForwardPlan(frustum.nearFace) &&
+		global_sphere.IsOnOrForwardPlan(frustum.topFace) &&
+		global_sphere.IsOnOrForwardPlan(frustum.bottomFace));
   };
 
-  void setPosition(const glm::vec3 &pos) override {
+  void SetPosition(const glm::vec3 &pos) override {
 	center = pos;
   }
 };

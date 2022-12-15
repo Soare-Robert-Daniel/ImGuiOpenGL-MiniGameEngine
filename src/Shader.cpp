@@ -5,11 +5,11 @@
 #include "Shader.h"
 #include "ShaderLoader.h"
 
-int Shader::getId() const {
+int Shader::GetId() const {
   return programId;
 }
 
-void Shader::setId(int id) {
+void Shader::SetId(int id) {
   Shader::programId = id;
 }
 

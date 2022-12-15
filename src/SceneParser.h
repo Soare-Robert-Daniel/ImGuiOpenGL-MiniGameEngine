@@ -20,7 +20,7 @@ using json = nlohmann::json;
 class SceneParser {
 
  public:
-  static void parseConfigFile(const std::string &fileName,
+  static void ParseConfigFile(const std::string &fileName,
 							  SceneResources &scene_resources,
 							  std::shared_ptr<GameObject> &scene_root) {
 	std::ifstream f(fileName);
@@ -28,14 +28,12 @@ class SceneParser {
 	json data = json::parse(f);
 
 	if (data.contains("sceneRoot")) {
-	  scene_root = parseGameObject(data.at("sceneRoot"));
+	  scene_root = ParseGameObject(data.at("sceneRoot"));
 	}
   }
 
-  static std::shared_ptr<GameObject> parseGameObject(const json &raw_game_object) {
+  static std::shared_ptr<GameObject> ParseGameObject(const json &raw_game_object) {
 	std::shared_ptr<GameObject> obj(new GameObject());
-
-	std::cout << raw_game_object << std::endl;
 
 	if (raw_game_object.contains("transform")) {
 	  auto t = raw_game_object.at("transform");
@@ -62,32 +60,32 @@ class SceneParser {
 	if (raw_game_object.contains("children")) {
 	  auto c = raw_game_object.at("children");
 	  for (auto &child : c) {
-		obj->AddChildren(parseGameObject(child));
+		auto result = ParseGameObject(child);
+		result->parent = obj;
+		obj->AddChildren(result);
 	  }
 	}
 
 	if (raw_game_object.contains("components")) {
 	  auto c = raw_game_object.at("components");
 	  for (auto &child : c) {
-		obj->AddComponent(parseComponent(child));
+		obj->AddComponent(ParseComponent(child));
 	  }
 	}
 
 	return obj;
   }
 
-  static std::shared_ptr<Component> parseComponent(json raw_c) {
+  static std::shared_ptr<Component> ParseComponent(json raw_c) {
 	std::shared_ptr<EmptyComponent> empty(new EmptyComponent());
 
 	if (!raw_c.contains("type")) {
-	  std::cout << "No component" << std::endl;
 	  return (std::shared_ptr<Component>)empty;
 	}
 
 	auto t = raw_c.at("type").get<std::string>();
 
 	if (t=="rotation") {
-	  std::cout << "Rotation" << std::endl;
 	  std::shared_ptr<ContinuousRotationComponent> rot(new ContinuousRotationComponent());
 
 	  if (raw_c.contains("rotation")) {
@@ -95,23 +93,18 @@ class SceneParser {
 		rot->rotation.y = raw_c.at("rotation").at("y").get<float>();
 		rot->rotation.z = raw_c.at("rotation").at("z").get<float>();
 	  }
-	  std::cout << rot->rotation.z << std::endl;
-
 
 	  return (std::shared_ptr<Component>)rot;
 	}
 
 	if (t=="render") {
-	  std::cout << "Render" << std::endl;
 	  std::shared_ptr<RenderComponent> render(new RenderComponent());
 
 	  if (raw_c.contains("modelRef") && Global::HasModel(raw_c.at("modelRef").get<std::string>())) {
-		std::cout << raw_c.at("modelRef").get<std::string>() << std::endl;
 		render->model = Global::GetModel(raw_c.at("modelRef").get<std::string>());
 	  }
 
 	  if (raw_c.contains("shaderRef") && Global::HasShader(raw_c.at("shaderRef").get<std::string>())) {
-		std::cout << raw_c.at("shaderRef").get<std::string>() << std::endl;
 		render->shader = Global::GetShader(raw_c.at("shaderRef").get<std::string>());
 	  }
 
@@ -120,7 +113,6 @@ class SceneParser {
 		for(auto& texture : raw_c.at("texturesRef")) {
 		  auto name = texture.get<std::string>();
 		  if( Global::HasTexture(name) ) {
-			std::cout << name << std::endl;
 			render->textures.push_back(Global::GetTexture(name));
 		  }
 		}

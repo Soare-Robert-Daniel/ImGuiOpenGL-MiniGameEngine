@@ -24,12 +24,14 @@ class GameObject {
   Transform transform{};
   std::vector<std::shared_ptr<Component>> components{};
   std::vector<std::shared_ptr<GameObject>> children{};
+  std::shared_ptr<GameObject> parent;
   bool wasRendered;
 
   GameObject() = default;
 
   virtual void Start();
   virtual void Update(const SceneResources &resources);
+  virtual void UpdateChildrenModelView();
 
   // Components
   virtual void AddComponent(std::shared_ptr<Component> component);
