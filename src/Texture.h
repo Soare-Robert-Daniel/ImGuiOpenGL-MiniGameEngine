@@ -17,6 +17,7 @@ class Texture {
   void Activate();
   void Bind(unsigned int slot);
   void ActivateAndBind(unsigned int slot);
+  void Unbind();
 
   virtual ~Texture();
 

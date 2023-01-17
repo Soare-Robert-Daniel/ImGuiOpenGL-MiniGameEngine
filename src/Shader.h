@@ -30,6 +30,7 @@ class Shader {
   ShaderData data;
 
   void Use() const;
+  void Stop() const;
 
   void SetBool(const std::string &name, bool value) const;
   void SetFloat(const std::string &name, float value) const;

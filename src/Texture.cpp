@@ -42,8 +42,13 @@ void Texture::Load(std::string filename) {
 	std::cout << "|  Failed to load texture" << std::endl;
   }
   stbi_image_free(data);
+
+  Unbind();
 }
 
 Texture::~Texture() {
   glDeleteTextures(1, &texture);
+}
+void Texture::Unbind() {
+  glBindTexture(GL_TEXTURE_2D, 0);
 }

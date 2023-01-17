@@ -71,7 +71,7 @@ struct SphereVolume : CullingBoundingVolume {
 	const glm::vec3 global_scale = transform.getGlobalScale();
 
 	// Calculeaza centrul modelului
-	const glm::vec3 global_center{transform.model_matrix*glm::vec4(center, 1.f)};
+	const glm::vec3 global_center{transform.model_matrix*glm::vec4(glm::vec3(0), 1.f)};
 
 	// Gaseste dimensiunea sferei care incadreaza obiectul
 	const float maxScale = std::fmax(std::fmax(global_scale.x, global_scale.y), global_scale.z);

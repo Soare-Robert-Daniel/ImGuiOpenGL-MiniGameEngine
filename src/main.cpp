@@ -2,7 +2,6 @@
 #include <filesystem>
 #include <iostream>
 #include <vector>
-#include <ranges>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -99,6 +98,10 @@ int main() {
   texture->Load("simple_texture.jpg");
   Global::AddTexture("simple", texture);
 
+  std::shared_ptr<Texture> texture1(new Texture());
+  texture1->Load("second_simple.jpg");
+  Global::AddTexture("second_simple", texture1);
+
   std::cout << "Textures loaded." << std::endl;
 
   // +---------------- SHADER LOADING ----------------+
@@ -188,7 +191,7 @@ int main() {
   Global::AddModel("simple", model3D);
 
   // +---------------- CAMERA SETUP ----------------+
-  std::shared_ptr<Camera> camera(new Camera(glm::vec3(-10.0f, 0.0f, 0.0f)));
+  std::shared_ptr<Camera> camera(new Camera(glm::vec3(-10.0f, 3.0f, 3.0f)));
   camera->SetDistance(10.0f);
   camera->SetTarget(glm::vec3(0));
 
@@ -206,9 +209,10 @@ int main() {
   camera->frustumData = {
 	  .aspect = 800.0f/600.0f,
 	  .fovY = glm::radians(45.0f),
-	  .zNear = 0.1f,
+	  .zNear = 0.01f,
 	  .zFar = 100.0f
   };
+
 
   // Screen Frame Buffer
   std::unique_ptr<ScreenBuffer> screen_buffer(new ScreenBuffer());
@@ -221,9 +225,9 @@ int main() {
   std::shared_ptr<GameObject> sceneRoot(new GameObject());
 
   // Lighting
-  LightingData lighting_data = {.position = camera->pos, .color = glm::vec3(0.3f, 0.5f, 0.0f)};
+  // LightingData lighting_data = {.position = camera->pos, .color = glm::vec3(0.3f, 0.5f, 0.0f)};
 
-  SceneResources scene_resources = {.projection = projection, .camera = camera, .lighting_data = lighting_data};
+  SceneResources scene_resources = {.projection = projection, .camera = camera }; //}, .lighting_data = lighting_data};
 
   SceneParser::ParseConfigFile("scene.json", scene_resources, sceneRoot);
 
@@ -251,7 +255,6 @@ int main() {
 	);
 
 	// HandleInput(window, delta_time, camera);
-
 	screen_buffer->BindBuffer();
 
 	ImGui_ImplOpenGL3_NewFrame();
@@ -279,9 +282,18 @@ int main() {
 
 	  {
 		ImGui::Begin("Scene");
+		ImGui::Text("Camera Pos: %.0f %.0f %.0f", camera->pos.x, camera->pos.y, camera->pos.z);
 		ImGui::Text("FPS: %.0f", glm::round(1.0/delta_time));
 		ImGui::Text("Cursor Lock: %s", CameraMovement::GetInstance().lockMouse ? "ON" : "OFF");
 		ImGui::Text("Rendered Objs: %d", sceneRoot->CountRenderedObjects());
+		if( ImGui::Button("Lock Mouse")) {
+		  CameraMovement::GetInstance().lockMouse = true;
+		  if (CameraMovement::GetInstance().lockMouse) {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		  } else {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		  }
+		}
 		ImGui::End();
 	  }
 

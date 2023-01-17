@@ -30,6 +30,10 @@ class SceneParser {
 	if (data.contains("sceneRoot")) {
 	  scene_root = ParseGameObject(data.at("sceneRoot"));
 	}
+
+	if (data.contains("sceneResources")) {
+	  ParseSceneResources(scene_resources, data.at("sceneResources"));
+	}
   }
 
   static std::shared_ptr<GameObject> ParseGameObject(const json &raw_game_object) {
@@ -122,6 +126,23 @@ class SceneParser {
 	}
 
 	return (std::shared_ptr<Component>)empty;
+  }
+
+  static void ParseSceneResources(SceneResources& scene_resources, json data) {
+	scene_resources.lighting_data.position.x = -1;
+	if( data.contains("lighting")) {
+	  auto d = data.at("lighting");
+	  if (d.contains("position")) {
+		scene_resources.lighting_data.position.x = d.at("position").at("x").get<float>();
+		scene_resources.lighting_data.position.y = d.at("position").at("y").get<float>();
+		scene_resources.lighting_data.position.z = d.at("position").at("z").get<float>();
+	  }
+	  if (d.contains("color")) {
+		scene_resources.lighting_data.color.x = d.at("color").at("r").get<float>();
+		scene_resources.lighting_data.color.y = d.at("color").at("g").get<float>();
+		scene_resources.lighting_data.color.z = d.at("color").at("b").get<float>();
+	  }
+	}
   }
 };
 

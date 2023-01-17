@@ -6,7 +6,7 @@
 #include "GameObject.h"
 
 void RenderComponent::Start(GameObject *object) {
-  culling_bounding_volume = std::make_unique<SphereVolume>(SphereVolume{object->transform.position, 1.0f});
+  culling_bounding_volume = std::make_unique<SphereVolume>(SphereVolume{glm::vec3(0.5), 1.0f});
 }
 
 void RenderComponent::Update(GameObject *object, const SceneResources &resources) {
@@ -36,6 +36,13 @@ void RenderComponent::Update(GameObject *object, const SceneResources &resources
   shader->SetVector3("viewPos", resources.camera->pos);
 
   model->RenderMeshes();
+
+  shader->Stop();
+
+  for (auto &texture : textures) {
+	texture->Unbind();
+  }
+
 
   object->wasRendered = true;
 }
