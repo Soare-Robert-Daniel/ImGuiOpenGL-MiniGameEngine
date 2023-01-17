@@ -14,8 +14,8 @@ class Texture {
  public:
   Texture() = default;
   void Load(std::string filename);
-  void Activate();
-  void Bind(unsigned int slot);
+  void Bind();
+  void SetActiveSlot(unsigned int slot);
   void ActivateAndBind(unsigned int slot);
   void Unbind();
 

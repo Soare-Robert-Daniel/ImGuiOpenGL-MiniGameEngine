@@ -7,17 +7,17 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-void Texture::Activate() {
+void Texture::Bind() {
   glBindTexture(GL_TEXTURE_2D, texture);
 }
 
-void Texture::Bind(unsigned int slot) {
+void Texture::SetActiveSlot(unsigned int slot) {
   glActiveTexture(GL_TEXTURE0 + slot);
 }
 
 void Texture::ActivateAndBind(unsigned int slot) {
-  Activate();
-  Bind(slot);
+  SetActiveSlot(slot);
+  Bind();
 }
 
 void Texture::Load(std::string filename) {
@@ -51,4 +51,5 @@ Texture::~Texture() {
 }
 void Texture::Unbind() {
   glBindTexture(GL_TEXTURE_2D, 0);
+  glActiveTexture(GL_TEXTURE0);
 }

@@ -102,16 +102,32 @@ int main() {
   texture1->Load("second_simple.jpg");
   Global::AddTexture("second_simple", texture1);
 
+  std::shared_ptr<Texture> texture2(new Texture());
+  texture2->Load("Gravel_001_BaseColor.jpg");
+  Global::AddTexture("Gravel_001_BaseColor", texture2);
+
+  std::shared_ptr<Texture> texture3(new Texture());
+  texture3->Load("Gravel_001_Normal.jpg");
+  Global::AddTexture("Gravel_001_Normal", texture3);
+
   std::cout << "Textures loaded." << std::endl;
 
   // +---------------- SHADER LOADING ----------------+
   std::shared_ptr<Shader> shader(new Shader());
-  shader->data = {.texture_num = 1};
+  shader->data = {.texture_num = 1, .normal_num = 0};
   shader->AddFile(ShaderLoader::VERTEX, "simple_vertex.glsl");
   shader->AddFile(ShaderLoader::FRAGMENT, "simple_fragment.glsl");
   shader->LoadFiles();
 
   Global::AddShader("simple", shader);
+
+  std::shared_ptr<Shader> shader1(new Shader());
+  shader1->data = {.texture_num = 1, .normal_num = 1};
+  shader1->AddFile(ShaderLoader::VERTEX, "normal_vertex.glsl");
+  shader1->AddFile(ShaderLoader::FRAGMENT, "normal_fragment.glsl");
+  shader1->LoadFiles();
+
+  Global::AddShader("normal", shader1);
 
   std::cout << "Shaders loaded." << std::endl;
 

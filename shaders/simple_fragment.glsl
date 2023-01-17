@@ -8,12 +8,17 @@ in vec3 FragPos;
 out vec4 FragColor;
 
 uniform sampler2D texture0;
+uniform sampler2D normalMap0;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
 
 void main()
 {
+  // Ambient
+  float ambientStrength = 0.5;
+  vec3 ambient = ambientStrength * lightColor;
+
   // Diffuse
   vec3 norm = normalize(Normal);
   vec3 lightDir = normalize(lightPos - FragPos);
@@ -27,7 +32,7 @@ void main()
   float intensity = pow(max(dot(viewDirection, reflectDirection), 0.0), 32);
   vec3 specular = specularStrength * intensity * lightColor;
 
-  vec4 lighting = vec4(diffuse + specular, 1.0);
+  vec4 lighting = vec4(diffuse + specular + ambient, 1.0);
 
   FragColor = texture(texture0, TexCoord) * lighting;
 }

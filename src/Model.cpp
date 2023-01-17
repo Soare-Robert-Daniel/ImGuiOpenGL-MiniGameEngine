@@ -69,6 +69,15 @@ std::shared_ptr<Mesh> Model::CreateMeshFromNode(aiMesh *mesh) {
 	  vertex.textCoords = glm::vec2(0.0f, 0.0f);
 	}
 
+	// TANGENT SPACE
+	if(mesh->HasTangentsAndBitangents()) {
+	  vertex.tangent = glm::vec3(
+		  mesh->mTangents[vertIdx].x,
+		  mesh->mTangents[vertIdx].y,
+		  mesh->mTangents[vertIdx].z
+	  );
+	}
+
 	vertices.push_back(vertex);
   }
 

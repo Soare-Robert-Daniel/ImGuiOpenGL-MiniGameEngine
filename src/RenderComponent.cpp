@@ -18,13 +18,27 @@ void RenderComponent::Update(GameObject *object, const SceneResources &resources
   shader->Use();
   int loaded_textures_index = 0;
   for (auto &texture : textures) {
-	if (loaded_textures_index > shader->data.texture_num) {
+	if (loaded_textures_index >= shader->data.texture_num) {
 	  break;
 	}
 
 	auto texture_location = "texture" + std::to_string(loaded_textures_index);
 	texture->ActivateAndBind(loaded_textures_index);
 	shader->SetInt(texture_location, loaded_textures_index);
+	loaded_textures_index += 1;
+  }
+
+  int loaded_normal_maps = 0;
+  for (auto &texture : normalMap) {
+	if (loaded_normal_maps >= shader->data.normal_num) {
+	  break;
+	}
+
+	// std::cout << GL_TEXTURE0<< " " << GL_TEXTURE1 << " " << GL_TEXTURE0 + loaded_normal_maps + loaded_textures_index << std::endl;
+	auto texture_location = "normalMap" + std::to_string(loaded_normal_maps);
+	texture->ActivateAndBind(loaded_normal_maps + loaded_textures_index);
+	shader->SetInt(texture_location, loaded_normal_maps + loaded_textures_index);
+	loaded_normal_maps += 1;
   }
 
   shader->SetMatrix("model", object->transform.GetSceneView());
@@ -40,6 +54,10 @@ void RenderComponent::Update(GameObject *object, const SceneResources &resources
   shader->Stop();
 
   for (auto &texture : textures) {
+	texture->Unbind();
+  }
+
+  for (auto &texture : normalMap) {
 	texture->Unbind();
   }
 

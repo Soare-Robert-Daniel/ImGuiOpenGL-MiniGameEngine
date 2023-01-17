@@ -7,9 +7,9 @@
         "z": 0
       },
       "color": {
-        "r": 0.2,
-        "g": 0.5,
-        "b": 0.3
+        "r": 1,
+        "g": 1,
+        "b": 1
       }
     }
   },
@@ -37,7 +37,7 @@
         "rotation": {
           "x": 0,
           "y": 0,
-          "z": 5
+          "z": 0
         }
       }
     ],
@@ -66,15 +66,16 @@
             "type": "rotation",
             "rotation": {
               "x": 0,
-              "y": 5,
+              "y": 0,
               "z": 0
             }
           },
           {
             "type": "render",
             "modelRef": "simple",
-            "texturesRef": ["simple"],
-            "shaderRef": "simple"
+            "texturesRef": ["Gravel_001_BaseColor"],
+            "normalMapsRef": ["Gravel_001_Normal"],
+            "shaderRef": "normal"
           }
         ]
       },

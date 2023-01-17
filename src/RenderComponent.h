@@ -16,6 +16,7 @@ class RenderComponent : public Component {
 
   std::shared_ptr<Model> model;
   std::vector<std::shared_ptr<Texture>> textures;
+  std::vector<std::shared_ptr<Texture>> normalMap;
   std::shared_ptr<Shader> shader;
   std::unique_ptr<CullingBoundingVolume> culling_bounding_volume;
 

@@ -7,6 +7,7 @@
 
 struct ShaderData {
   int texture_num;
+  int normal_num;
 };
 
 #endif //CGE_SHADERDATA_H

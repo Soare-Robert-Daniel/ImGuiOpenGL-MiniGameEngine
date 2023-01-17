@@ -122,6 +122,16 @@ class SceneParser {
 		}
 	  }
 
+	  if (raw_c.contains("normalMapsRef")) {
+		render->normalMap = {};
+		for (auto &texture : raw_c.at("normalMapsRef")) {
+		  auto name = texture.get<std::string>();
+		  if (Global::HasTexture(name)) {
+			render->normalMap.push_back(Global::GetTexture(name));
+		  }
+		}
+	  }
+
 	  return (std::shared_ptr<Component>)render;
 	}
 

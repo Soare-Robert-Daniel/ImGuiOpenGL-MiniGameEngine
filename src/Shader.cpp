@@ -27,7 +27,7 @@ void Shader::Refresh() {
 }
 
 void Shader::LoadFiles() {
-  ShaderLoader::singleton_->Clean();
+  // ShaderLoader::singleton_->Clean();
   for (auto &file : files) {
 	ShaderLoader::singleton_->LoadShaderFromFile(std::get<0>(file), std::get<1>(file));
   }

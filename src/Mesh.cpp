@@ -22,12 +22,12 @@ void Mesh::LoadToGPU() {
   glGenVertexArrays(1, &VAO_);
   glBindVertexArray(VAO_);
 
-  // Bind VBO
+  // SetActiveSlot VBO
   glGenBuffers(1, &VBO_);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_);
   glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices[0])*_vertices.size(), &_vertices[0], GL_STATIC_DRAW);
 
-  // Bind IBO
+  // SetActiveSlot IBO
   glGenBuffers(1, &IBO_);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO_);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_indices[0])*_indices.size(), &_indices[0], GL_STATIC_DRAW);
@@ -52,6 +52,14 @@ void Mesh::LoadToGPU() {
 						GL_FALSE,
 						sizeof(CGE::Vertex),
 						(void *)(sizeof(glm::vec3) + sizeof(glm::vec4) + sizeof(glm::vec3)));
+
+  // Send the tangent.
+  glVertexAttribPointer(4,
+						4,
+						GL_FLOAT,
+						GL_FALSE,
+						sizeof(CGE::Vertex),
+						(void *)(sizeof(glm::vec3) + sizeof(glm::vec4) + sizeof(glm::vec3) + sizeof(glm::vec2)));
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);

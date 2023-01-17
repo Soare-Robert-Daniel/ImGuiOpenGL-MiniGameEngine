@@ -12,6 +12,7 @@ struct Vertex {
   glm::vec4 color;
   glm::vec3 normal;
   glm::vec2 textCoords;
+  glm::vec3 tangent;
 };
 
 } // CGE
