@@ -11,37 +11,41 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "ShaderLoader.h"
+#include "ShaderData.h"
 
 class Shader {
-public:
-    Shader() = default;
+ public:
+  Shader() = default;
 
-    explicit Shader(int id): programId(id) {
+  explicit Shader(int id) : programId(id) {
 
-    }
+  }
 
-private:
-    int programId{};
-    std::string fileName;
-    std::vector<std::tuple<ShaderLoader::ShaderType, std::string>> files;
+ private:
+  int programId{};
+  std::string fileName;
+  std::vector<std::tuple<ShaderLoader::ShaderType, std::string>> files;
 
-public:
-    void Use() const;
+ public:
+  ShaderData data;
 
-    void SetBool(const std::string& name, bool value) const;
-    void SetFloat(const std::string& name, float value) const;
-    void SetInt(const std::string& name, int value) const;
-    void SetMatrix(const std::string& name, glm::mat4 matrix) const;
+  void Use() const;
+  void Stop() const;
 
-    void AddFile(ShaderLoader::ShaderType type, const std::string &filepath );
-    void LoadFiles();
-    void Refresh();
+  void SetBool(const std::string &name, bool value) const;
+  void SetFloat(const std::string &name, float value) const;
+  void SetInt(const std::string &name, int value) const;
+  void SetVector3(const std::string &name, glm::vec3 vector) const;
+  void SetMatrix(const std::string &name, glm::mat4 matrix) const;
 
-    int getId() const;
-    void setId(int id);
+  void AddFile(ShaderLoader::ShaderType type, const std::string &filepath);
+  void LoadFiles();
+  void Refresh();
 
-    virtual ~Shader();
+  int GetId() const;
+  void SetId(int id);
+
+  virtual ~Shader();
 };
-
 
 #endif //CGE_SHADER_H

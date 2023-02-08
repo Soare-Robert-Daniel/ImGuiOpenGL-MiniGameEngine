@@ -8,29 +8,29 @@ cmake_policy(SET CMP0091 NEW)
 project(cge LANGUAGES CXX C)
 
 # target
-set(CMAKE_C_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.33.31629/bin/HostX64/x64/cl.exe")
-set(CMAKE_CXX_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.33.31629/bin/HostX64/x64/cl.exe")
+set(CMAKE_C_COMPILER "/usr/bin/clang")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 add_executable(cge "")
 set_target_properties(cge PROPERTIES OUTPUT_NAME "cge")
-set_target_properties(cge PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/windows/x64/release")
+set_target_properties(cge PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/macosx/x86_64/release")
 target_include_directories(cge PRIVATE
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glfw/3.3.8/86420fa11a104f67872b0ed3effa0da1/include
-    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/7f6d516390884be69fcfaa7e3f669952/include
-    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/7f6d516390884be69fcfaa7e3f669952/include/imgui
-    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/7f6d516390884be69fcfaa7e3f669952/include/backends
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glm/0.9.9+8/0a4263c9bbb64fe39a11af3c5743abc0/include
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glad/v0.1.36/9a72474603a849498c21d2462f0ad025/include
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glew/2.2.0/6f67f419189d4c7a8f222aae1311038d/include
-    C:/Users/Robert/AppData/Local/.xmake/packages/s/stb/2021.09.10/f94e80cd4717410f960b64150d6d3727/include
-    C:/Users/Robert/AppData/Local/.xmake/packages/a/assimp/v5.2.4/bb9f88b2d0164e35bb8361043ec8ca55/include
-    C:/Users/Robert/AppData/Local/.xmake/packages/z/zlib/v1.2.12/a454bc20f209450da098f8baf79a2a6f/include
+    /usr/local/Cellar/glfw/3.3.8/include
+    /Users/robert/.xmake/packages/i/imgui/v1.88/cebb2e0d72334b8bae7d3f400d352359/include
+    /Users/robert/.xmake/packages/i/imgui/v1.88/cebb2e0d72334b8bae7d3f400d352359/include/imgui
+    /Users/robert/.xmake/packages/i/imgui/v1.88/cebb2e0d72334b8bae7d3f400d352359/include/backends
+    /Users/robert/.xmake/packages/g/glm/0.9.9+8/68f2790999a34512a6a107cb2fc15057/include
+    /Users/robert/.xmake/packages/g/glad/v0.1.36/3dd6804df90c4393880277f7ee73ff38/include
+    /usr/local/Cellar/glew/2.2.0_1/include
+    /Users/robert/.xmake/packages/s/stb/2021.09.10/6c0c2519d0ea47cfa24a36df5c1c169a/include
+    /Users/robert/.xmake/packages/a/assimp/v5.2.5/1d1c22d630054cd08a2c4b6a4f2b516d/include
+    /Users/robert/.xmake/packages/n/nlohmann_json/v3.11.2/55637776d78843dd9a21fdf7580682b0/include
 )
 target_compile_definitions(cge PRIVATE
-    GLFW_INCLUDE_NONE
-    GLEW_NO_GLU
-    GLEW_STATIC
+    GL_SILENCE_DEPRECATION
 )
 target_compile_options(cge PRIVATE
+    $<$<COMPILE_LANGUAGE:C>:-m64>
+    $<$<COMPILE_LANGUAGE:CXX>:-m64>
     $<$<COMPILE_LANGUAGE:C>:-DNDEBUG>
     $<$<COMPILE_LANGUAGE:CXX>:-DNDEBUG>
 )
@@ -50,39 +50,43 @@ if(MSVC)
         MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 target_link_libraries(cge PRIVATE
-    glfw3
-    opengl32
+    glfw.3.3
     imgui
     glad
-    glew32s
-    assimp-vc143-mt
+    GLEW
+    assimp
     zlibstatic
-    zlib
-    user32
-    shell32
-    gdi32
-    imm32
-    opengl32
-    advapi32
+    z
+    "-framework OpenGL"
 )
 target_link_directories(cge PRIVATE
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glfw/3.3.8/86420fa11a104f67872b0ed3effa0da1/lib
-    C:/Users/Robert/AppData/Local/.xmake/packages/i/imgui/v1.88/7f6d516390884be69fcfaa7e3f669952/lib
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glad/v0.1.36/9a72474603a849498c21d2462f0ad025/lib
-    C:/Users/Robert/AppData/Local/.xmake/packages/g/glew/2.2.0/6f67f419189d4c7a8f222aae1311038d/lib
-    C:/Users/Robert/AppData/Local/.xmake/packages/a/assimp/v5.2.4/bb9f88b2d0164e35bb8361043ec8ca55/lib
-    C:/Users/Robert/AppData/Local/.xmake/packages/z/zlib/v1.2.12/a454bc20f209450da098f8baf79a2a6f/lib
+    /usr/local/Cellar/glfw/3.3.8/lib
+    /Users/robert/.xmake/packages/i/imgui/v1.88/cebb2e0d72334b8bae7d3f400d352359/lib
+    /Users/robert/.xmake/packages/g/glad/v0.1.36/3dd6804df90c4393880277f7ee73ff38/lib
+    /usr/local/Cellar/glew/2.2.0_1/lib
+    /Users/robert/.xmake/packages/a/assimp/v5.2.5/1d1c22d630054cd08a2c4b6a4f2b516d/lib
+)
+target_link_options(cge PRIVATE
+    -m64
 )
 target_sources(cge PRIVATE
-    src/Camera.cpp
-    src/emath.cpp
-    src/GameObject.cpp
-    src/gl_utils.cpp
-    src/main.cpp
+    src/SceneParser.cpp
     src/Mesh.cpp
-    src/Model.cpp
-    src/Shader.cpp
-    src/ShaderLoader.cpp
+    src/CameraMovement.cpp
+    src/Camera.cpp
+    src/RenderComponent.cpp
+    src/GameObject.cpp
+    src/Component.cpp
     src/Texture.cpp
+    src/emath.cpp
+    src/Shader.cpp
+    src/ScreenBuffer.cpp
+    src/Transform.cpp
+    src/Model.cpp
+    src/gl_utils.cpp
+    src/ContinuousRotationComponent.cpp
+    src/ShaderLoader.cpp
+    src/main.cpp
+    src/Culling.cpp
 )
 

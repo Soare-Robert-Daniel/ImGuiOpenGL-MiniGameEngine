@@ -23,13 +23,24 @@ It will make a platform checking, you should see something like this:
 
 Black Magic for setting the platform to x64 and generate `CMakeLists.txt` for VS or Clion.
 
+Set Windows target to x64
 ```bash
 xmake f -y -p windows -a x64 -m release
+```
+
+Update CMake
+```bash
 xmake project -k cmake -y
 ```
 
+Copy assets to build folder.
 ```bash
+# Windows
 cp shaders/* assets/* build/windows/x64/release/Debug/ && cp shaders/* assets/* build/windows/x64/release/
+
+# MacOS
+cp shaders/* assets/* build/macosx/x86_64/release/Debug/
+cp shaders/* assets/* build/macosx/x86_64/release/
 ```
 
 

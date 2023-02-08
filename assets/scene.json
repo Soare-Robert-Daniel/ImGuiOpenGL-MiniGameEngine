@@ -1,0 +1,120 @@
+{
+  "sceneResources": {
+    "lighting": {
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      }
+    }
+  },
+  "sceneRoot": {
+    "transform": {
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    "components": [
+      {
+        "type": "rotation",
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    ],
+    "children": [
+      {
+        "name": "Cube",
+        "transform": {
+          "position": {
+            "x": 3,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 2,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "components": [
+          {
+            "type": "rotation",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "type": "render",
+            "modelRef": "simple",
+            "texturesRef": ["Gravel_001_BaseColor"],
+            "normalMapsRef": ["Gravel_001_Normal"],
+            "shaderRef": "normal"
+          }
+        ]
+      },
+      {
+        "name": "Cube",
+        "transform": {
+          "position": {
+            "x": -3,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 2,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "components": [
+          {
+            "type": "rotation",
+            "rotation": {
+              "x": 0,
+              "y": 5,
+              "z": 0
+            }
+          },
+          {
+            "type": "render",
+            "modelRef": "simple",
+            "texturesRef": ["simple"],
+            "shaderRef": "simple"
+          }
+        ]
+      }
+    ]
+  }
+}

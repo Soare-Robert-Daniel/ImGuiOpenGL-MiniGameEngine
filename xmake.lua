@@ -4,10 +4,10 @@ add_rules("mode.debug", "mode.release")
 set_languages("cxx20")
 
 -- Platform settings for compiler
-if is_host("windows") then
+if is_plat("windows") then
    set_toolchains("msvc")
 end
-if is_host("macosx") then
+if is_plat("macosx") then
     set_toolchains("clang")
 end
 
@@ -15,6 +15,7 @@ end
 add_requires("imgui", {configs = {glfw_opengl3 = true}})
 
 -- OpenGL libs
+add_requires("opengl")
 add_requires("glfw")
 add_requires("glad")
 add_requires("glm")
@@ -23,13 +24,14 @@ add_requires("glew")
 -- Helpers libs
 add_requires("stb")
 add_requires("assimp")
+add_requires("nlohmann_json")
 
 -- Executable
 target("cge")
     set_kind("binary")
     -- add_headerfiles("src/*.h")
     add_files("src/*.cpp")
-    add_packages("glfw", "imgui", "glm", "glad", "glew", "stb", "assimp")
+    add_packages("opengl", "glfw", "imgui", "glm", "glad", "glew", "stb", "assimp", "nlohmann_json")
 
 
 --
