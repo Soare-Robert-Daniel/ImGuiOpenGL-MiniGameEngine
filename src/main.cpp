@@ -206,6 +206,10 @@ int main() {
   model3D->LoadFromFile("test_model.obj");
   Global::AddModel("simple", model3D);
 
+  std::shared_ptr<Model> model3D1(new Model());
+  model3D1->LoadFromFile("cube_test.obj");
+  Global::AddModel("cube", model3D1);
+
   // +---------------- CAMERA SETUP ----------------+
   std::shared_ptr<Camera> camera(new Camera(glm::vec3(-10.0f, 3.0f, 3.0f)));
   camera->SetDistance(10.0f);
